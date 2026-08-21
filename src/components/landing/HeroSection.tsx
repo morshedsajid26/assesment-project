@@ -178,39 +178,39 @@ export const HeroSection: React.FC = () => {
 
           <div className="relative rounded-[28px] bg-white/95 dark:bg-zinc-900/90 backdrop-blur-2xl border border-white/90 dark:border-zinc-800 shadow-[0_25px_70px_-15px_rgba(59,130,246,0.16)] dark:shadow-2xl overflow-hidden">
             {/* Mockup Window Titlebar */}
-            <div className="px-6 py-4 bg-slate-100/90 dark:bg-zinc-950/80 border-b border-slate-200/80 dark:border-zinc-800/80 flex items-center justify-between">
+            <div className="px-4 sm:px-6 py-3.5 sm:py-4 bg-slate-100/90 dark:bg-zinc-950/80 border-b border-slate-200/80 dark:border-zinc-800/80 flex flex-wrap gap-2 items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block" />
-                <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block" />
-                <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
-                <span className="text-xs font-semibold text-zinc-500 ml-3">
-                  ChatApp Live Preview • v2.0
+                <span className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-rose-500/80 inline-block" />
+                <span className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-amber-500/80 inline-block" />
+                <span className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-emerald-500/80 inline-block" />
+                <span className="text-[11px] sm:text-xs font-semibold text-zinc-500 ml-2 hidden sm:inline-block">
+                  ChatApp Live Preview
                 </span>
               </div>
 
               {/* Mockup Active Channel Switcher */}
-              <div className="flex items-center gap-1 bg-slate-200/80 dark:bg-zinc-800/90 p-1 rounded-xl border border-slate-300/80 dark:border-zinc-700/80">
+              <div className="flex items-center gap-1 bg-slate-200/80 dark:bg-zinc-800/90 p-0.5 sm:p-1 rounded-xl border border-slate-300/80 dark:border-zinc-700/80">
                 <button
                   onClick={() => setActiveTab("group")}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold flex items-center gap-1 sm:gap-1.5 transition-all cursor-pointer ${
                     activeTab === "group"
                       ? "bg-blue-600 text-white shadow-xs font-bold"
                       : "text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-slate-300/60 dark:hover:bg-zinc-700/60"
                   }`}
                 >
                   <ThreeUsersIcon className="w-3.5 h-3.5" />
-                  <span>Dev Team Group</span>
+                  <span>Dev Team</span>
                 </button>
                 <button
                   onClick={() => setActiveTab("direct")}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold flex items-center gap-1 sm:gap-1.5 transition-all cursor-pointer ${
                     activeTab === "direct"
                       ? "bg-blue-600 text-white shadow-xs font-bold"
                       : "text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-slate-300/60 dark:hover:bg-zinc-700/60"
                   }`}
                 >
                   <User className="w-3.5 h-3.5" />
-                  <span>Tanvir (Direct)</span>
+                  <span>Tanvir</span>
                 </button>
               </div>
             </div>

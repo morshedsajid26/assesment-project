@@ -36,11 +36,11 @@ export default function LandingPage() {
       {/* 3. Bento Grid Core Features */}
       <BentoFeatures />
 
-      {/* 4. How It Works (3 Simple Steps) */}
-      <HowItWorks />
-
-      {/* 5. Interactive Feature Deep Dive */}
+      {/* 4. Interactive Feature Deep Dive */}
       <FeatureDeepDive />
+
+      {/* 5. How It Works (3 Simple Steps) */}
+      <HowItWorks />
 
       {/* 6. Community Testimonials / Social Proof */}
       <TestimonialsSection />
