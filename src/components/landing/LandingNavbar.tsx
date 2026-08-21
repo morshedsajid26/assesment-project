@@ -81,7 +81,7 @@ export const LandingNavbar: React.FC = () => {
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Brand Logo */}
         <BrandLogo
           href="#hero"
@@ -90,7 +90,7 @@ export const LandingNavbar: React.FC = () => {
         />
 
         {/* Desktop Nav Links */}
-        <nav className="hidden lg:flex items-center gap-1 p-1 rounded-full bg-slate-100/70 dark:bg-zinc-900/70 border border-slate-200/60 dark:border-zinc-800 backdrop-blur-md shrink-0">
+        <nav className="hidden lg:flex items-center gap-1.5 p-1.5 rounded-full bg-slate-100/80 dark:bg-zinc-900/80 border border-slate-200/80 dark:border-zinc-800 backdrop-blur-md shrink-0 shadow-xs">
           {navLinks.map((link) => {
             const isActive = activeSection === link.href.substring(1);
             return (
@@ -98,9 +98,9 @@ export const LandingNavbar: React.FC = () => {
                 key={link.label}
                 href={link.href}
                 onClick={(e) => handleScrollTo(e, link.href)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all ${
                   isActive
-                    ? "bg-white dark:bg-zinc-800 text-blue-600 dark:text-blue-400 shadow-xs font-bold"
+                    ? "bg-white dark:bg-zinc-800 text-blue-600 dark:text-blue-400 shadow-sm font-bold"
                     : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
                 }`}
               >
@@ -111,25 +111,25 @@ export const LandingNavbar: React.FC = () => {
         </nav>
 
         {/* Actions (Theme Toggle + Auth CTAs) */}
-        <div className="hidden lg:flex items-center gap-3 shrink-0">
-          <ThemeToggle className="bg-slate-100/80 dark:bg-zinc-800/80 backdrop-blur border border-slate-200/80 dark:border-zinc-700/60" />
+        <div className="hidden lg:flex items-center gap-3.5 shrink-0">
+          <ThemeToggle className="bg-slate-100/80 dark:bg-zinc-800/80 backdrop-blur border border-slate-200/80 dark:border-zinc-700/60 p-2.5" />
 
           {isAuthenticated ? (
             <Link
               href="/chat"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-700 hover:via-indigo-700 hover:to-violet-700 text-white shadow-md shadow-blue-500/25 active:scale-95 transition-all group whitespace-nowrap"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-700 hover:via-indigo-700 hover:to-violet-700 text-white shadow-md shadow-blue-500/25 active:scale-95 transition-all group whitespace-nowrap"
             >
               <span>Open Dashboard</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           ) : (
             <Link
               href="/login"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-700 hover:via-indigo-700 hover:to-violet-700 text-white shadow-md shadow-blue-500/25 active:scale-95 transition-all group whitespace-nowrap"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-700 hover:via-indigo-700 hover:to-violet-700 text-white shadow-md shadow-blue-500/25 active:scale-95 transition-all group whitespace-nowrap"
             >
-              <Zap className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
+              <Zap className="w-4 h-4 text-amber-300 fill-amber-300" />
               <span>Start Chatting</span>
-              <ArrowRight className="w-3.5 h-3.5 text-white/80 group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight className="w-4 h-4 text-white/80 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           )}
         </div>
