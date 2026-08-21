@@ -2,305 +2,223 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Sparkles,
   ArrowRight,
   Zap,
   Shield,
-  Send,
-  CheckCheck,
-  Smile,
-  Phone,
-  Info,
-  User,
+  MessageSquare,
+  Users,
+  Activity,
+  CheckCircle2,
 } from "lucide-react";
-import { Avatar } from "@/src/components/ui/Avatar";
-import { ThreeUsersIcon } from "@/src/components/ui/ThreeUsersIcon";
+import { HeroChatMockup } from "@/src/components/landing/HeroChatMockup";
 
 export const HeroSection: React.FC = () => {
-  // Simulated interactive chat animation state
-  const [activeTab, setActiveTab] = useState<"direct" | "group">("group");
+  // Dynamic rotating animated audience words
+  const rotatingWords = ["Teams", "Developers", "Friends", "Communities", "Creators"];
+  const [wordIndex, setWordIndex] = useState(0);
 
-  const groupMessages = [
-    {
-      id: 1,
-      sender: "Tanvir Rahman",
-      text: "Hey team! Just pushed the real-time WebSocket messaging updates 🚀",
-      time: "10:42 AM",
-      isMe: false,
-    },
-    {
-      id: 2,
-      sender: "You",
-      text: "Awesome! Sub-50ms latency is incredible. All socket channels are syncing seamlessly.",
-      time: "10:43 AM",
-      isMe: true,
-    },
-    {
-      id: 3,
-      sender: "Sabbir Ahmed",
-      text: "Group admin promotion and member management are working perfectly too! 🎉",
-      time: "10:44 AM",
-      isMe: false,
-    },
-  ];
-
-  const directMessages = [
-    {
-      id: 1,
-      sender: "Tanvir Rahman",
-      text: "Hey, did you check out the new dark mode & scrollbar improvements?",
-      time: "11:15 AM",
-      isMe: false,
-    },
-    {
-      id: 2,
-      sender: "You",
-      text: "Yes! Contrast looks super sharp and eye-catching now.",
-      time: "11:16 AM",
-      isMe: true,
-    },
-    {
-      id: 3,
-      sender: "Tanvir Rahman",
-      text: "Great! Let's get everything deployed to production. 🚀",
-      time: "11:17 AM",
-      isMe: false,
-    },
-  ];
-
-  const messages = activeTab === "group" ? groupMessages : directMessages;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWordIndex((prev) => (prev + 1) % rotatingWords.length);
+    }, 2400);
+    return () => clearInterval(interval);
+  }, [rotatingWords.length]);
 
   return (
-    <section id="hero" className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden scroll-mt-20">
-      {/* Dynamic Ambient Background Glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-tr from-blue-500/25 via-indigo-500/20 to-purple-500/15 dark:from-blue-600/10 dark:via-indigo-600/10 dark:to-purple-600/5 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute top-1/3 right-10 w-[420px] h-[420px] bg-cyan-400/20 dark:bg-cyan-600/10 rounded-full blur-[110px] pointer-events-none" />
-      <div className="absolute top-1/2 left-10 w-[420px] h-[420px] bg-violet-400/20 dark:bg-violet-600/10 rounded-full blur-[110px] pointer-events-none" />
+    <section id="hero" className="relative pt-32 pb-24 md:pt-44 md:pb-36 overflow-hidden scroll-mt-20">
+      {/* ============================================================ */}
+      {/* 1. HEAVY BACKGROUND EFFECTS: Cyber Grid, Sonar Radar Rings & Orbiting Beams */}
+      {/* ============================================================ */}
 
+      {/* Cyber Dot Grid Background */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#3b82f612_1px,transparent_1px),linear-gradient(to_bottom,#3b82f612_1px,transparent_1px)] bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)] pointer-events-none" />
+
+      {/* Expanding Sonar / Radar Pulse Rings */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+        <motion.div
+          animate={{ scale: [1, 2.4], opacity: [0.35, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeOut" }}
+          className="w-[320px] h-[320px] rounded-full border-2 border-blue-500/40"
+        />
+        <motion.div
+          animate={{ scale: [1, 2.4], opacity: [0.35, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeOut", delay: 1.3 }}
+          className="w-[320px] h-[320px] rounded-full border-2 border-indigo-500/30 absolute inset-0 m-auto"
+        />
+        <motion.div
+          animate={{ scale: [1, 2.4], opacity: [0.35, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeOut", delay: 2.6 }}
+          className="w-[320px] h-[320px] rounded-full border-2 border-violet-500/30 absolute inset-0 m-auto"
+        />
+      </div>
+
+      {/* Multi-Colored Orbiting Giant Glow Spheres */}
+      <motion.div
+        animate={{
+          scale: [1, 1.25, 1],
+          x: [-35, 35, -35],
+          y: [-25, 25, -25],
+          rotate: [0, 180, 360],
+        }}
+        transition={{ repeat: Infinity, duration: 15, ease: "easeInOut" }}
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[850px] bg-gradient-to-tr from-blue-500/30 via-indigo-600/25 to-violet-600/20 dark:from-blue-600/20 dark:via-indigo-600/18 dark:to-purple-600/15 rounded-full blur-[150px] pointer-events-none"
+      />
+      <motion.div
+        animate={{
+          scale: [1, 1.3, 1],
+          x: [30, -30, 30],
+          y: [20, -20, 20],
+        }}
+        transition={{ repeat: Infinity, duration: 12, ease: "easeInOut", delay: 1 }}
+        className="absolute top-1/3 right-4 w-[500px] h-[500px] bg-cyan-400/25 dark:bg-cyan-500/15 rounded-full blur-[120px] pointer-events-none"
+      />
+      <motion.div
+        animate={{
+          scale: [1, 1.2, 1],
+          x: [-30, 30, -30],
+          y: [-20, 20, -20],
+        }}
+        transition={{ repeat: Infinity, duration: 14, ease: "easeInOut", delay: 2 }}
+        className="absolute top-1/2 left-4 w-[500px] h-[500px] bg-fuchsia-400/25 dark:bg-fuchsia-600/15 rounded-full blur-[120px] pointer-events-none"
+      />
+
+      {/* Floating Starlight Particles */}
+      {[...Array(6)].map((_, i) => (
+        <motion.div
+          key={i}
+          animate={{
+            y: [0, -30, 0],
+            opacity: [0.2, 0.8, 0.2],
+            scale: [0.8, 1.4, 0.8],
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: 3 + i,
+            ease: "easeInOut",
+            delay: i * 0.7,
+          }}
+          style={{
+            top: `${20 + (i * 12)}%`,
+            left: `${10 + (i * 16)}%`,
+          }}
+          className="absolute w-2 h-2 rounded-full bg-blue-400 dark:bg-blue-300 blur-[1px] pointer-events-none"
+        />
+      ))}
+
+      {/* ============================================================ */}
+      {/* 2. HERO CONTENT WITH HEAVY ANIMATIONS */}
+      {/* ============================================================ */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-4xl mx-auto">
-          {/* Announcement Pill Badge */}
+          {/* Glowing Animated Announcement Pill */}
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 dark:bg-zinc-800/80 backdrop-blur-md border border-blue-200/60 dark:border-zinc-700/80 shadow-md shadow-blue-500/10 mb-8"
+            initial={{ opacity: 0, scale: 0.8, y: -30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.6, type: "spring", stiffness: 200, damping: 15 }}
+            className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white/95 dark:bg-zinc-900/90 backdrop-blur-2xl border border-blue-400/50 dark:border-blue-500/40 shadow-[0_0_25px_rgba(59,130,246,0.25)] mb-8 hover:scale-105 transition-all cursor-default"
           >
-            <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500" />
+            <span className="flex h-2.5 w-2.5 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-80" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500 shadow-sm" />
             </span>
-            <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">
-              ⚡ Powered by Real-Time WebSockets & Next.js 16
+            <span className="text-xs font-extrabold text-zinc-900 dark:text-zinc-100 tracking-wide uppercase">
+              ⚡ Sub-50ms WebSocket Broadcast Engine
             </span>
-            <span className="text-xs text-blue-600 dark:text-blue-400 font-bold ml-1 flex items-center gap-0.5">
-              Explore <ArrowRight className="w-3 h-3" />
+            <span className="w-1 h-1 rounded-full bg-blue-400" />
+            <span className="text-xs text-blue-600 dark:text-blue-400 font-extrabold flex items-center gap-1">
+               <ArrowRight className="w-3.5 h-3.5" />
             </span>
           </motion.div>
 
-          {/* Main Headline */}
+          {/* Dynamic Headline with Flipping Word Reel */}
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-[1.1]"
+            initial={{ opacity: 0, y: 35, filter: "blur(10px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 0.8, delay: 0.1, type: "spring", damping: 18 }}
+            className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-[1.08]"
           >
-            Instant Conversations. <br />
-            <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">
-              Limitless Connections.
+            Instant Real-Time Chat for{" "}
+            <span className="inline-block relative min-w-[200px] sm:min-w-[320px] text-left">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={rotatingWords[wordIndex]}
+                  initial={{ y: 40, opacity: 0, rotateX: -90, filter: "blur(8px)" }}
+                  animate={{ y: 0, opacity: 1, rotateX: 0, filter: "blur(0px)" }}
+                  exit={{ y: -40, opacity: 0, rotateX: 90, filter: "blur(8px)" }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="inline-block bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 dark:from-blue-400 dark:via-indigo-300 dark:to-violet-400 bg-clip-text text-transparent decoration-blue-500/30 underline-offset-8"
+                >
+                  {rotatingWords[wordIndex]}
+                </motion.span>
+              </AnimatePresence>
             </span>
           </motion.h1>
 
-          {/* Subtitle */}
+          {/* Subtitle with Animated Reveal */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="mt-6 text-base sm:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed"
+            transition={{ duration: 0.7, delay: 0.25 }}
+            className="mt-7 text-base sm:text-xl text-zinc-600 dark:text-zinc-300 max-w-2xl mx-auto leading-relaxed font-medium"
           >
-            Experience ultra-fast, zero-friction real-time messaging with instant
-            passwordless sign-in, private direct rooms, and group collaboration channels.
+            Experience lightning-fast messaging with zero password hurdles, continuous WebSocket synchronization, and intelligent group channel hierarchy.
           </motion.p>
 
-          {/* CTAs */}
+          {/* Animated Spinning Laser CTA Button Strip */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-5"
           >
-            <Link
-              href="/login"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl text-base font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-700 hover:via-indigo-700 hover:to-violet-700 text-white shadow-xl shadow-blue-500/25 hover:shadow-2xl hover:shadow-blue-500/35 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all"
-            >
-              <Sparkles className="w-5 h-5 text-blue-200" />
-              <span>Start Chatting Free</span>
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            {/* High-Energy Primary Button with Conic Laser Glow */}
+            <div className="relative group w-full sm:w-auto">
+              {/* Spinning Rainbow Glow Border */}
+              <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 opacity-70 blur-lg group-hover:opacity-100 group-hover:blur-xl transition duration-500 animate-pulse" />
 
+              <Link
+                href="/login"
+                className="relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-9 py-4.5 rounded-2xl text-base font-extrabold bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 text-white shadow-2xl shadow-indigo-500/40 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
+              >
+                <Zap className="w-5 h-5 text-amber-300 fill-amber-300 animate-bounce" />
+                <span>Start Chatting Free</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
+              </Link>
+            </div>
+
+            {/* Secondary Glass Action */}
             <a
-              href="#demo"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl text-base font-semibold bg-white/80 dark:bg-zinc-800/80 backdrop-blur-md hover:bg-slate-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-slate-200/90 dark:border-zinc-700/80 shadow-sm hover:shadow transition-all"
+              href="#how-it-works"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4.5 rounded-2xl text-base font-bold bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border border-slate-300/80 dark:border-zinc-700/80 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:scale-95 transition-all"
             >
-              <span>See How It Works</span>
+              <span>Explore 3-Step Setup</span>
             </a>
           </motion.div>
 
-          {/* Trust Highlights */}
+          {/* Trust Metric Badges */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="mt-8 flex items-center justify-center gap-6 text-xs text-zinc-500 dark:text-zinc-400 font-medium"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.55 }}
+            className="mt-9 flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-xs font-bold text-zinc-600 dark:text-zinc-400"
           >
-            <span className="flex items-center gap-1.5">
-              <Zap className="w-4 h-4 text-amber-500" /> No password required
+            <span className="flex items-center gap-2 bg-slate-100/80 dark:bg-zinc-800/80 px-3.5 py-1.5 rounded-xl border border-slate-200/80 dark:border-zinc-700/60 shadow-xs">
+              <Zap className="w-4 h-4 text-amber-500" /> &lt;50ms Latency
             </span>
-            <span className="flex items-center gap-1.5">
-              <Shield className="w-4 h-4 text-emerald-500" /> Real-time socket sync
+            <span className="flex items-center gap-2 bg-slate-100/80 dark:bg-zinc-800/80 px-3.5 py-1.5 rounded-xl border border-slate-200/80 dark:border-zinc-700/60 shadow-xs">
+              <Shield className="w-4 h-4 text-emerald-500" /> No Passwords
+            </span>
+            <span className="flex items-center gap-2 bg-slate-100/80 dark:bg-zinc-800/80 px-3.5 py-1.5 rounded-xl border border-slate-200/80 dark:border-zinc-700/60 shadow-xs">
+              <Activity className="w-4 h-4 text-blue-500" /> 100% Real-Time
             </span>
           </motion.div>
         </div>
 
-        {/* ============================================================ */}
-        {/* Interactive Floating Chat App Mockup Showcase */}
-        {/* ============================================================ */}
-        <motion.div
-          initial={{ opacity: 0, y: 50, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-          className="mt-16 lg:mt-24 relative max-w-5xl mx-auto"
-        >
-          {/* Decorative Glow Ring behind mockup */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 rounded-[32px] blur-xl opacity-30 dark:opacity-20 animate-pulse pointer-events-none" />
-
-          <div className="relative rounded-[28px] bg-white/95 dark:bg-zinc-900/90 backdrop-blur-2xl border border-white/90 dark:border-zinc-800 shadow-[0_25px_70px_-15px_rgba(59,130,246,0.16)] dark:shadow-2xl overflow-hidden">
-            {/* Mockup Window Titlebar */}
-            <div className="px-4 sm:px-6 py-3.5 sm:py-4 bg-slate-100/90 dark:bg-zinc-950/80 border-b border-slate-200/80 dark:border-zinc-800/80 flex flex-wrap gap-2 items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-rose-500/80 inline-block" />
-                <span className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-amber-500/80 inline-block" />
-                <span className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-emerald-500/80 inline-block" />
-                <span className="text-[11px] sm:text-xs font-semibold text-zinc-500 ml-2 hidden sm:inline-block">
-                  ChatApp Live Preview
-                </span>
-              </div>
-
-              {/* Mockup Active Channel Switcher */}
-              <div className="flex items-center gap-1 bg-slate-200/80 dark:bg-zinc-800/90 p-0.5 sm:p-1 rounded-xl border border-slate-300/80 dark:border-zinc-700/80">
-                <button
-                  onClick={() => setActiveTab("group")}
-                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold flex items-center gap-1 sm:gap-1.5 transition-all cursor-pointer ${
-                    activeTab === "group"
-                      ? "bg-blue-600 text-white shadow-xs font-bold"
-                      : "text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-slate-300/60 dark:hover:bg-zinc-700/60"
-                  }`}
-                >
-                  <ThreeUsersIcon className="w-3.5 h-3.5" />
-                  <span>Dev Team</span>
-                </button>
-                <button
-                  onClick={() => setActiveTab("direct")}
-                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold flex items-center gap-1 sm:gap-1.5 transition-all cursor-pointer ${
-                    activeTab === "direct"
-                      ? "bg-blue-600 text-white shadow-xs font-bold"
-                      : "text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-slate-300/60 dark:hover:bg-zinc-700/60"
-                  }`}
-                >
-                  <User className="w-3.5 h-3.5" />
-                  <span>Tanvir</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Mockup Chat Body */}
-            <div className="p-6 md:p-8 bg-gradient-to-br from-slate-50/90 via-sky-50/30 to-indigo-50/20 dark:from-zinc-950 dark:via-zinc-900/90 dark:to-zinc-950 min-h-[380px] flex flex-col justify-between">
-              {/* Header inside mockup */}
-              <div className="flex items-center justify-between pb-4 border-b border-slate-200/70 dark:border-zinc-800/80">
-                <div className="flex items-center gap-3">
-                  <Avatar
-                    name={activeTab === "group" ? "Engineering Core" : "Tanvir Rahman"}
-                    isGroup={activeTab === "group"}
-                    size="md"
-                    showOnlineDot={activeTab === "direct"}
-                    isOnline
-                  />
-                  <div>
-                    <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-50 flex items-center gap-1.5">
-                      {activeTab === "group" ? "Engineering Core" : "Tanvir Rahman"}
-                      {activeTab === "group" && (
-                        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 border border-indigo-200/60 dark:border-indigo-800/60">
-                          Group
-                        </span>
-                      )}
-                    </h4>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      {activeTab === "group" ? "12 members • 8 online" : "Online • +88017..."}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="p-2 rounded-xl bg-white/80 dark:bg-zinc-800/80 border border-slate-200/80 dark:border-zinc-700/60 text-zinc-500">
-                  <Info className="w-4 h-4" />
-                </div>
-              </div>
-
-              {/* Animated Message Bubbles */}
-              <div className="space-y-4 my-6">
-                {messages.map((msg, i) => (
-                  <motion.div
-                    key={msg.id}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.6 + i * 0.15 }}
-                    className={`flex items-end gap-2.5 ${msg.isMe ? "justify-end" : "justify-start"}`}
-                  >
-                    {!msg.isMe && (
-                      <Avatar name={msg.sender} seedId={msg.sender} size="xs" />
-                    )}
-
-                    <div
-                      className={`max-w-[80%] md:max-w-[65%] rounded-2xl px-4 py-3 text-xs sm:text-sm leading-relaxed ${
-                        msg.isMe
-                          ? "bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 text-white rounded-br-xs shadow-md shadow-blue-500/20"
-                          : "bg-white/95 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border border-slate-200/90 dark:border-zinc-700/60 rounded-bl-xs shadow-sm"
-                      }`}
-                    >
-                      {!msg.isMe && (
-                        <p className="text-[11px] font-bold text-blue-600 dark:text-blue-400 mb-1">
-                          {msg.sender}
-                        </p>
-                      )}
-                      <p>{msg.text}</p>
-                      <div
-                        className={`flex items-center justify-end gap-1 mt-1 text-[10px] ${
-                          msg.isMe ? "text-blue-100" : "text-zinc-400"
-                        }`}
-                      >
-                        <span>{msg.time}</span>
-                        {msg.isMe && <CheckCheck className="w-3.5 h-3.5 text-blue-200" />}
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Mockup Input Box */}
-              <div className="pt-3 border-t border-slate-200/70 dark:border-zinc-800/80 flex items-center gap-2">
-                <div className="flex-1 flex items-center bg-white/90 dark:bg-zinc-800/80 rounded-2xl border border-slate-200/90 dark:border-zinc-700/60 px-4 py-2.5 text-xs text-zinc-400">
-                  <span className="flex-1">Type a message...</span>
-                  <Smile className="w-4 h-4 text-zinc-400 hover:text-zinc-600" />
-                </div>
-                <div className="w-10 h-10 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/30">
-                  <Send className="w-4 h-4" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+        {/* Dedicated Separate Live Interactive Chat Mockup Component */}
+        <HeroChatMockup />
       </div>
     </section>
   );
