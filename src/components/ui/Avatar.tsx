@@ -62,12 +62,13 @@ export const Avatar: React.FC<AvatarProps> = ({
       {showOnlineDot && !isGroup && (
         <span
           className={cn(
-            "absolute rounded-full ring-2 ring-white dark:ring-zinc-900 transition-colors",
+            "absolute rounded-full ring-2 ring-white dark:ring-zinc-900 transition-colors duration-200",
             dotSize[size],
             isOnline
-              ? "bg-emerald-500 shadow-xs shadow-emerald-500/50"
-              : "bg-zinc-400 dark:bg-zinc-600",
+              ? "bg-emerald-500 shadow-xs shadow-emerald-500/60"
+              : "bg-rose-500 shadow-xs shadow-rose-500/60",
           )}
+          title={isOnline ? "Active (Connected)" : "Inactive (Offline)"}
         />
       )}
     </div>

@@ -53,9 +53,10 @@ export default function ChatDashboardPage() {
   );
 
   // Initialize socket connection & background sync
-  useSocket({
+  const { isConnected } = useSocket({
     token,
     activeConversationId,
+    currentUserId: user?._id,
     onMessageReceived: handleMessageReceived,
     onRefreshConversations: fetchConversations,
   });
@@ -99,6 +100,7 @@ export default function ChatDashboardPage() {
           onCreateGroup={createGroupConversation}
           onRefresh={fetchConversations}
           onLogout={logout}
+          isSocketConnected={isConnected}
           className="h-full"
         />
       </div>

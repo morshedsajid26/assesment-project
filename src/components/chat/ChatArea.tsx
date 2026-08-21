@@ -48,11 +48,15 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
 
   // Handle incoming socket message
   useEffect(() => {
-    if (
-      incomingSocketMessage &&
-      incomingSocketMessage.conversation === conversation._id
-    ) {
-      addIncomingMessage(incomingSocketMessage);
+    if (incomingSocketMessage) {
+      const msgConvId =
+        typeof incomingSocketMessage.conversation === "object"
+          ? (incomingSocketMessage.conversation as any)?._id
+          : incomingSocketMessage.conversation;
+
+      if (String(msgConvId) === String(conversation._id)) {
+        addIncomingMessage(incomingSocketMessage);
+      }
     }
   }, [incomingSocketMessage, conversation._id, addIncomingMessage]);
 

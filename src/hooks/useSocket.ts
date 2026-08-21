@@ -10,13 +10,46 @@ const SOCKET_SERVER_URL =
 interface UseSocketOptions {
   token: string | null;
   activeConversationId: string | null;
+  currentUserId?: string | null;
   onMessageReceived?: (message: Message) => void;
   onRefreshConversations?: () => void;
 }
 
+const normalizeIncomingMessage = (data: any): Message | null => {
+  if (!data) return null;
+  const msg = data.message || data.data || data;
+  if (!msg) return null;
+
+  // Verify there is message content
+  const text = msg.text || msg.content || msg.body;
+  if (typeof text !== "string") return null;
+
+  const convId =
+    (typeof msg.conversation === "object" ? msg.conversation?._id : msg.conversation) ||
+    msg.conversationId ||
+    msg.conversation_id ||
+    msg.roomId;
+
+  const senderId =
+    (typeof msg.sender === "object" ? msg.sender?._id : msg.sender) ||
+    msg.senderId ||
+    msg.userId ||
+    msg.from;
+
+  return {
+    _id: String(msg._id || msg.id || `msg-${Date.now()}`),
+    conversation: String(convId || ""),
+    sender: typeof senderId === "object" ? senderId : String(senderId || ""),
+    text: text,
+    createdAt: msg.createdAt || msg.created_at || new Date().toISOString(),
+    status: "sent",
+  };
+};
+
 export const useSocket = ({
   token,
   activeConversationId,
+  currentUserId,
   onMessageReceived,
   onRefreshConversations,
 }: UseSocketOptions) => {
@@ -34,12 +67,25 @@ export const useSocket = ({
       return;
     }
 
+    const cleanToken = token.replace(/^Bearer\s+/i, "");
+    const bearerToken = `Bearer ${cleanToken}`;
+
     const socket = io(SOCKET_SERVER_URL, {
-      auth: { token },
-      query: { token },
+      auth: {
+        token: cleanToken,
+        jwt: cleanToken,
+        authorization: bearerToken,
+      },
+      query: {
+        token: cleanToken,
+        ...(currentUserId ? { userId: currentUserId } : {}),
+      },
+      extraHeaders: {
+        Authorization: bearerToken,
+      },
       transports: ["websocket", "polling"],
       reconnection: true,
-      reconnectionAttempts: 10,
+      reconnectionAttempts: Infinity,
       reconnectionDelay: 1000,
     });
 
@@ -47,9 +93,20 @@ export const useSocket = ({
 
     socket.on("connect", () => {
       setIsConnected(true);
+
+      // Join user-specific room
+      if (currentUserId) {
+        socket.emit("setup", { id: currentUserId });
+        socket.emit("join", currentUserId);
+        socket.emit("join_user", currentUserId);
+      }
+
+      // Join active conversation room if set
       if (activeConversationId) {
         socket.emit("join", activeConversationId);
         socket.emit("join_conversation", activeConversationId);
+        socket.emit("joinRoom", activeConversationId);
+        socket.emit("join_room", activeConversationId);
       }
     });
 
@@ -57,44 +114,66 @@ export const useSocket = ({
       setIsConnected(false);
     });
 
-    // Listen to standard message events
-    const handleIncomingMessage = (data: any) => {
-      if (data && data._id && data.text) {
-        if (onMessageReceived) onMessageReceived(data);
+    const handlePayload = (payload: any) => {
+      const normalized = normalizeIncomingMessage(payload);
+      if (normalized && normalized.text) {
+        if (onMessageReceived) onMessageReceived(normalized);
         if (onRefreshConversations) onRefreshConversations();
       }
     };
 
-    socket.on("message", handleIncomingMessage);
-    socket.on("newMessage", handleIncomingMessage);
-    socket.on("message:receive", handleIncomingMessage);
-    socket.on("receive_message", handleIncomingMessage);
+    // Listen to standard named events
+    const events = [
+      "message",
+      "newMessage",
+      "new_message",
+      "message:receive",
+      "receive_message",
+      "receiveMessage",
+      "chat_message",
+      "chatMessage",
+      "messageCreated",
+      "message_created",
+      "sendMessage",
+      "send_message",
+      "conversation_updated",
+      "update_conversation",
+    ];
+
+    events.forEach((ev) => socket.on(ev, handlePayload));
+
+    // Catch-all listener for any custom event emitted by the server
+    socket.onAny((event, ...args) => {
+      if (args && args.length > 0) {
+        handlePayload(args[0]);
+      }
+    });
 
     return () => {
-      socket.off("message", handleIncomingMessage);
-      socket.off("newMessage", handleIncomingMessage);
-      socket.off("message:receive", handleIncomingMessage);
-      socket.off("receive_message", handleIncomingMessage);
+      events.forEach((ev) => socket.off(ev, handlePayload));
       socket.disconnect();
       socketRef.current = null;
     };
-  }, [token, onMessageReceived, onRefreshConversations, activeConversationId]);
+  }, [token, currentUserId]);
 
   // Join room when activeConversationId changes
   useEffect(() => {
-    if (socketRef.current && socketRef.current.connected && activeConversationId) {
-      socketRef.current.emit("join", activeConversationId);
-      socketRef.current.emit("join_conversation", activeConversationId);
+    const socket = socketRef.current;
+    if (socket && socket.connected && activeConversationId) {
+      socket.emit("join", activeConversationId);
+      socket.emit("join_conversation", activeConversationId);
+      socket.emit("joinRoom", activeConversationId);
+      socket.emit("join_room", activeConversationId);
     }
   }, [activeConversationId]);
 
-  // Smart polling fallback (every 3.5 seconds) to ensure 100% reliable updates
+  // Smart polling fallback (every 3 seconds) to guarantee synchronization
   useEffect(() => {
     if (!token || !activeConversationId) return;
 
     const interval = setInterval(() => {
       if (onRefreshConversations) onRefreshConversations();
-    }, 3500);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [token, activeConversationId, onRefreshConversations]);

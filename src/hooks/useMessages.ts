@@ -27,6 +27,8 @@ export const useMessages = (conversationId: string | null, currentUser: User | n
       );
     },
     enabled: !!conversationId,
+    refetchInterval: 2500, // 2.5s live polling fallback to guarantee real-time sync
+    refetchOnWindowFocus: true,
   });
 
   // Mutation to send a message with optimistic UI updates
@@ -79,13 +81,18 @@ export const useMessages = (conversationId: string | null, currentUser: User | n
   // Add incoming socket message into TanStack cache
   const addIncomingMessage = useCallback(
     (newMsg: Message) => {
-      if (newMsg.conversation !== conversationId) return;
+      const msgConvId =
+        typeof newMsg.conversation === "object"
+          ? (newMsg.conversation as any)?._id
+          : newMsg.conversation;
+
+      if (String(msgConvId) !== String(conversationId)) return;
 
       queryClient.setQueryData<Message[]>(["messages", conversationId], (old = []) => {
         const exists = old.some(
           (m) =>
             m._id === newMsg._id ||
-            (m.status === "pending" && m.text === newMsg.text && m.sender === newMsg.sender)
+            (m.status === "pending" && m.text === newMsg.text)
         );
         let updated: Message[];
         if (exists) {

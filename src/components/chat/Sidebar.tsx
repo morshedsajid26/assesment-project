@@ -33,6 +33,7 @@ export interface SidebarProps {
   onCreateGroup: (name: string, participantIds: string[]) => Promise<any>;
   onRefresh: () => void;
   onLogout: () => void;
+  isSocketConnected?: boolean;
   className?: string;
 }
 
@@ -46,6 +47,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onCreateGroup,
   onRefresh,
   onLogout,
+  isSocketConnected = true,
   className = "",
 }) => {
   const [filterQuery, setFilterQuery] = useState("");
@@ -122,7 +124,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <aside
         className={`flex flex-col h-full bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-r border-slate-200/90 dark:border-zinc-800 ${className}`}
       >
-        {/* User Profile Header */}
+        {/* User Profile Header with Real-Time Status */}
         <div className="p-4 border-b border-slate-200/70 dark:border-zinc-800/80 flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
             <Avatar
@@ -130,7 +132,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               seedId={currentUser?._id}
               size="md"
               showOnlineDot
-              isOnline
+              isOnline={isSocketConnected}
             />
             <div className="min-w-0">
               <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-50 truncate">
