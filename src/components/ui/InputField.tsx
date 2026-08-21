@@ -54,9 +54,9 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
             id={inputId}
             disabled={disabled}
             className={cn(
-              "w-full rounded-xl bg-slate-50 dark:bg-zinc-900/80 border text-zinc-900 dark:text-zinc-100 px-3.5 py-2.5 text-sm transition-all duration-150 shadow-2xs",
+              "w-full rounded-xl bg-slate-50 dark:bg-zinc-900 border text-zinc-900 dark:text-zinc-100 px-3.5 py-2.5 text-sm transition-all duration-150 shadow-2xs",
               "placeholder:text-zinc-400 dark:placeholder:text-zinc-500",
-              "focus:outline-none focus:bg-white dark:focus:bg-zinc-850 focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500",
+              "focus:outline-none focus:bg-white dark:focus:bg-zinc-900 focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500",
               leftIcon ? "pl-10" : "pl-3.5",
               rightIcon ? "pr-10" : "pr-3.5",
               error

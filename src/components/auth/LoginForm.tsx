@@ -10,6 +10,7 @@ import {
   User as UserIcon,
   Sparkles,
   AlertCircle,
+  ArrowRight,
 } from "lucide-react";
 
 export const LoginForm: React.FC = () => {
@@ -61,26 +62,25 @@ export const LoginForm: React.FC = () => {
 
   return (
     <div
-      className="w-full max-w-md mx-auto p-8 rounded-3xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200/80 dark:border-zinc-800 shadow-2xl shadow-blue-500/5 transition-all"
+      className="w-full max-w-md mx-auto p-8 sm:p-10 rounded-3xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-2xl border border-white/90 dark:border-zinc-800 shadow-2xl shadow-blue-500/10 transition-all"
       suppressHydrationWarning
     >
       {/* Brand Header */}
       <div className="flex flex-col items-center text-center mb-8">
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30 mb-4">
-          <MessageSquare className="w-7 h-7" />
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-xl shadow-blue-500/35 mb-4 ring-4 ring-blue-500/15">
+          <MessageSquare className="w-8 h-8" />
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
           Welcome to ChatApp
         </h1>
-        <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400 max-w-xs">
-          Enter your phone number and name to sign in or instantly create your
-          account.
+        <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400 max-w-xs leading-relaxed">
+          Enter your phone number and name to sign in or instantly get started.
         </p>
       </div>
 
       {/* Global Error Banner */}
       {error && (
-        <div className="mb-6 p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/50 flex items-center gap-3 text-rose-600 dark:text-rose-400 text-xs animate-in fade-in duration-200">
+        <div className="mb-6 p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/50 flex items-center gap-3 text-rose-600 dark:text-rose-400 text-xs animate-in fade-in duration-200">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
@@ -117,19 +117,18 @@ export const LoginForm: React.FC = () => {
           type="submit"
           variant="primary"
           size="lg"
-          className="w-full mt-2 font-semibold shadow-md shadow-blue-500/25"
+          className="w-full mt-3 font-bold h-12 rounded-2xl shadow-xl shadow-blue-500/30 text-sm tracking-wide"
           isLoading={loading}
-          rightIcon={<Sparkles className="w-4 h-4" />}
+          rightIcon={<ArrowRight className="w-4 h-4" />}
         >
           Continue to Chat
         </Button>
       </form>
 
       {/* Helpful Hint */}
-      <div className="mt-6 pt-5 border-t border-zinc-100 dark:border-zinc-800/80 text-center">
+      <div className="mt-8 pt-5 border-t border-slate-200/80 dark:border-zinc-800/80 text-center">
         <p className="text-xs text-zinc-400 dark:text-zinc-500 leading-relaxed">
-          🔒 No password required. If your phone number is not registered yet,
-          we will register it for you automatically.
+          🔒 No password required. If you are new, your account will be created automatically.
         </p>
       </div>
     </div>
