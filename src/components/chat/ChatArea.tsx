@@ -69,7 +69,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-zinc-50/50 dark:bg-zinc-950/40 overflow-hidden">
+    <div className="flex-1 flex flex-col h-full bg-gradient-to-br from-slate-100/80 via-blue-50/20 to-slate-100/90 dark:from-zinc-950 dark:via-zinc-900/95 dark:to-zinc-950 overflow-hidden">
       {/* Header */}
       <ChatHeader
         conversation={conversation}

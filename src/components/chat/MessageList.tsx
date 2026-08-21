@@ -115,7 +115,7 @@ export const MessageList: React.FC<MessageListProps> = ({
             <div key={group.dateKey || groupIndex} className="space-y-1">
               {/* Date divider pill */}
               <div className="flex items-center justify-center my-3">
-                <span className="px-3 py-1 rounded-full text-[11px] font-semibold bg-zinc-200/70 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 select-none shadow-xs">
+                <span className="px-3.5 py-1 rounded-full text-[11px] font-semibold bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm border border-slate-200/80 dark:border-zinc-700/60 text-zinc-600 dark:text-zinc-400 select-none shadow-xs">
                   {group.dateKey}
                 </span>
               </div>

@@ -60,12 +60,12 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   const isBlank = !text.trim();
 
   return (
-    <div className="p-3 md:p-4 bg-white dark:bg-zinc-900 border-t border-zinc-200/80 dark:border-zinc-800">
+    <div className="p-3 md:p-4 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-slate-200/80 dark:border-zinc-800">
       <form
         onSubmit={handleSubmit}
         className="flex items-end gap-2.5 max-w-5xl mx-auto"
       >
-        <div className="flex-1 relative flex items-center bg-zinc-100/90 dark:bg-zinc-800/80 rounded-2xl border border-zinc-200/60 dark:border-zinc-700/60 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
+        <div className="flex-1 relative flex items-center bg-slate-100/90 dark:bg-zinc-800/80 rounded-2xl border border-slate-200/80 dark:border-zinc-700/60 focus-within:bg-white dark:focus-within:bg-zinc-850 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/15 shadow-2xs transition-all">
           <textarea
             ref={textareaRef}
             rows={1}
@@ -81,7 +81,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           <button
             type="button"
             onClick={() => setText((prev) => prev + " 😊")}
-            className="absolute right-3 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
+            className="absolute right-3 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors cursor-pointer"
             title="Add Emoji"
           >
             <Smile className="w-5 h-5" />
@@ -94,7 +94,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           variant="primary"
           size="icon"
           disabled={isBlank || disabled || sending}
-          className="rounded-2xl h-11 w-11 shrink-0 shadow-md shadow-blue-500/20"
+          className="rounded-2xl h-11 w-11 shrink-0 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-md shadow-blue-500/25 active:scale-95 transition-all"
           title="Send message (Enter)"
         >
           {sending ? (

@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { Conversation, User } from "@/src/types";
 import { ThreeUsersIcon } from "../ui/ThreeUsersIcon";
+import { ThemeToggle } from "@/src/components/ui/ThemeToggle";
 
 export interface SidebarProps {
   conversations: Conversation[];
@@ -100,10 +101,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <>
       <aside
-        className={`flex flex-col h-full bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 ${className}`}
+        className={`flex flex-col h-full bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-r border-slate-200/90 dark:border-zinc-800 ${className}`}
       >
         {/* User Profile Header */}
-        <div className="p-4 border-b border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between">
+        <div className="p-4 border-b border-slate-200/70 dark:border-zinc-800/80 flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
             <Avatar
               name={currentUser?.name}
@@ -123,10 +124,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
 
           <div className="flex items-center gap-1">
+            <ThemeToggle />
             <Dropdown
               trigger={
                 <button
-                  className="p-2 rounded-xl text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none cursor-pointer"
+                  className="p-2 rounded-xl text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none cursor-pointer"
                   aria-label="User Options"
                 >
                   <MoreVertical className="w-4 h-4" />
@@ -138,7 +140,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Search Bar */}
-        <div className="p-3 border-b border-zinc-100 dark:border-zinc-800/50">
+        <div className="p-3 border-b border-slate-200/60 dark:border-zinc-800/50">
           <div className="relative">
             <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
@@ -146,7 +148,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               placeholder="Search chats..."
               value={filterQuery}
               onChange={(e) => setFilterQuery(e.target.value)}
-              className="w-full rounded-xl bg-zinc-100/80 dark:bg-zinc-800/60 border border-transparent focus:border-blue-500 focus:bg-white dark:focus:bg-zinc-900 text-xs text-zinc-900 dark:text-zinc-100 pl-9 pr-3 py-2 outline-none transition-all placeholder:text-zinc-400"
+              className="w-full rounded-xl bg-slate-100/90 dark:bg-zinc-800/60 border border-slate-200/80 dark:border-transparent focus:border-blue-500 focus:bg-white dark:focus:bg-zinc-900 focus:ring-2 focus:ring-blue-500/15 text-xs text-zinc-900 dark:text-zinc-100 pl-9 pr-3 py-2 outline-none transition-all placeholder:text-zinc-400 shadow-2xs"
             />
           </div>
         </div>

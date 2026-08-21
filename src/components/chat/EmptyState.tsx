@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import {
   MessageSquare,
   MessageSquarePlus,
-  Users,
   Sparkles,
 } from "lucide-react";
+import { ThreeUsersIcon } from "@/src/components/ui/ThreeUsersIcon";
 import { Button } from "@/src/components/ui/Button";
 import { NewChatModal } from "@/src/components/modals/NewChatModal";
 import { CreateGroupModal } from "@/src/components/modals/CreateGroupModal";
@@ -26,9 +26,13 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   const [isCreateGroupOpen, setIsCreateGroupOpen] = useState(false);
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-8 bg-zinc-50/50 dark:bg-zinc-950/50 text-center">
-      <div className="max-w-md w-full p-8 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xl shadow-blue-500/5">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white mx-auto mb-4 shadow-lg shadow-blue-500/25">
+    <div className="flex-1 flex flex-col items-center justify-center p-8 bg-gradient-to-br from-slate-100/90 via-blue-50/20 to-slate-100/90 dark:from-zinc-950 dark:via-zinc-900/95 dark:to-zinc-950 text-center relative overflow-hidden">
+      {/* Ambient background glow */}
+      <div className="absolute w-96 h-96 rounded-full bg-blue-500/10 dark:bg-blue-600/5 blur-3xl pointer-events-none -top-12 -right-12" />
+      <div className="absolute w-96 h-96 rounded-full bg-indigo-500/10 dark:bg-indigo-600/5 blur-3xl pointer-events-none -bottom-12 -left-12" />
+
+      <div className="relative z-10 max-w-md w-full p-8 rounded-3xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border border-slate-200/90 dark:border-zinc-800 shadow-2xl shadow-blue-500/10">
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white mx-auto mb-4 shadow-lg shadow-blue-500/30 animate-in zoom-in-95 duration-200">
           <MessageSquare className="w-8 h-8" />
         </div>
 
@@ -46,7 +50,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
             size="md"
             onClick={() => setIsNewChatOpen(true)}
             leftIcon={<MessageSquarePlus className="w-4 h-4" />}
-            className="w-full text-xs font-semibold"
+            className="w-full text-xs font-semibold shadow-md shadow-blue-500/20"
           >
             Start Direct Chat
           </Button>
@@ -55,7 +59,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
             variant="secondary"
             size="md"
             onClick={() => setIsCreateGroupOpen(true)}
-            leftIcon={<Users className="w-4 h-4" />}
+            leftIcon={<ThreeUsersIcon className="w-4 h-4" />}
             className="w-full text-xs font-semibold"
           >
             Create Group

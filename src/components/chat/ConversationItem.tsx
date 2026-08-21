@@ -4,7 +4,7 @@ import React from "react";
 import { Avatar } from "@/src/components/ui/Avatar";
 import { formatConversationTime } from "@/src/lib/utils";
 import { Conversation, User } from "@/src/types";
-import { Users } from "lucide-react";
+import { ThreeUsersIcon } from "@/src/components/ui/ThreeUsersIcon";
 
 export interface ConversationItemProps {
   conversation: Conversation;
@@ -50,10 +50,10 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
   return (
     <div
       onClick={onClick}
-      className={`group relative flex items-center gap-3.5 p-3 rounded-2xl cursor-pointer transition-all duration-200 select-none ${
+      className={`group relative flex items-center gap-3.5 p-3 rounded-2xl cursor-pointer transition-all duration-150 select-none ${
         isActive
-          ? "bg-blue-600 text-white shadow-md shadow-blue-500/20 dark:shadow-blue-600/10"
-          : "hover:bg-zinc-100 dark:hover:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100"
+          ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/25 dark:shadow-blue-600/15"
+          : "hover:bg-slate-100/90 dark:hover:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100"
       }`}
     >
       {/* Avatar */}
@@ -77,7 +77,7 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
               {displayName}
             </h4>
             {isGroup && (
-              <Users
+              <ThreeUsersIcon
                 className={`w-3.5 h-3.5 shrink-0 ${
                   isActive
                     ? "text-blue-200"

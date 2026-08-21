@@ -50,10 +50,10 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
 
       {/* Bubble Container */}
       <div
-        className={`max-w-[75%] md:max-w-[65%] rounded-2xl px-4 py-2.5 shadow-sm text-sm leading-relaxed ${
+        className={`max-w-[78%] md:max-w-[65%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed transition-all ${
           isMe
-            ? "bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-br-xs"
-            : "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border border-zinc-200/70 dark:border-zinc-700/60 rounded-bl-xs"
+            ? "bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white rounded-br-xs shadow-md shadow-blue-500/20"
+            : "bg-white/95 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border border-slate-200/90 dark:border-zinc-700/60 rounded-bl-xs shadow-sm shadow-slate-200/60"
         }`}
       >
         {/* Sender Name in Group Chat */}
