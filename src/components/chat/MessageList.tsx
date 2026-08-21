@@ -158,7 +158,7 @@ export const MessageList: React.FC<MessageListProps> = ({
       {showScrollButton && (
         <button
           onClick={() => scrollToBottom("smooth")}
-          className="absolute bottom-4 right-6 px-3.5 py-2 rounded-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-semibold shadow-lg shadow-blue-500/30 flex items-center gap-1.5 transition-all animate-in fade-in slide-in-from-bottom-2 duration-150 cursor-pointer"
+          className="absolute bottom-4 right-1/2 translate-x-1/2 px-3.5 py-2 rounded-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-semibold shadow-lg shadow-blue-500/30 flex items-center gap-1.5 transition-all animate-in fade-in slide-in-from-bottom-2 duration-150 cursor-pointer"
         >
           <ArrowDown className="w-3.5 h-3.5" />
           <span>Latest messages</span>

@@ -114,6 +114,50 @@ export const useConversations = () => {
     },
   });
 
+  // Mutation: Promote member to admin
+  const promoteAdminMutation = useMutation({
+    mutationFn: async ({
+      conversationId,
+      userId,
+    }: {
+      conversationId: string;
+      userId: string;
+    }) => {
+      const res = await axios.post<Conversation>(`/conversations/${conversationId}/admins`, {
+        userId,
+      });
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["conversations"] });
+      toast.success("Member promoted to admin");
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.message || "Failed to promote to admin");
+    },
+  });
+
+  // Mutation: Remove member (Admin kicks a member)
+  const removeMemberMutation = useMutation({
+    mutationFn: async ({
+      conversationId,
+      userId,
+    }: {
+      conversationId: string;
+      userId: string;
+    }) => {
+      const res = await axios.delete(`/conversations/${conversationId}/participants/${userId}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["conversations"] });
+      toast.success("Member removed from group");
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.message || "Failed to remove member");
+    },
+  });
+
   // Mutation: Leave group
   const leaveMutation = useMutation({
     mutationFn: async ({
@@ -187,8 +231,14 @@ export const useConversations = () => {
       renameMutation.mutateAsync({ conversationId, name }),
     addParticipants: (conversationId: string, userIds: string[]) =>
       addMembersMutation.mutateAsync({ conversationId, userIds }),
-    removeParticipant: (conversationId: string, userId: string) =>
+    promoteToAdmin: (conversationId: string, userId: string) =>
+      promoteAdminMutation.mutateAsync({ conversationId, userId }),
+    removeMember: (conversationId: string, userId: string) =>
+      removeMemberMutation.mutateAsync({ conversationId, userId }),
+    leaveGroup: (conversationId: string, userId: string) =>
       leaveMutation.mutateAsync({ conversationId, userId }),
+    removeParticipant: (conversationId: string, userId: string) =>
+      removeMemberMutation.mutateAsync({ conversationId, userId }),
     updateConversationLastMessage,
   };
 };

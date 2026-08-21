@@ -11,13 +11,15 @@ import { CreateGroupModal } from "@/src/components/modals/CreateGroupModal";
 import {
   Search,
   MessageSquarePlus,
+  UserPlus,
   Users,
   MoreVertical,
   LogOut,
-  RefreshCw,
   MessageCircle,
+  MessagesSquare,
 } from "lucide-react";
 import { Conversation, User } from "@/src/types";
+import { ThreeUsersIcon } from "../ui/ThreeUsersIcon";
 
 export interface SidebarProps {
   conversations: Conversation[];
@@ -75,15 +77,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const userMenuItems = [
     {
-      id: "refresh",
-      label: "Refresh Chats",
-      icon: <RefreshCw className="w-3.5 h-3.5" />,
-      onClick: onRefresh,
+      id: "new-chat",
+      label: "New Chat",
+      icon: <MessagesSquare className="w-4 h-4 text-blue-500" />,
+      onClick: () => setIsNewChatOpen(true),
+    },
+    {
+      id: "new-group",
+      label: "New Group",
+      icon: <ThreeUsersIcon className="w-4 h-4 text-indigo-500" />,
+      onClick: () => setIsCreateGroupOpen(true),
     },
     {
       id: "logout",
       label: "Log Out",
-      icon: <LogOut className="w-3.5 h-3.5" />,
+      icon: <LogOut className="w-4 h-4" />,
       danger: true,
       onClick: onLogout,
     },
@@ -118,7 +126,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <Dropdown
               trigger={
                 <button
-                  className="p-2 rounded-xl text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none"
+                  className="p-2 rounded-xl text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none cursor-pointer"
                   aria-label="User Options"
                 >
                   <MoreVertical className="w-4 h-4" />
@@ -129,30 +137,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </div>
 
-        {/* Action Controls & Search Bar */}
-        <div className="p-4 space-y-3 border-b border-zinc-100 dark:border-zinc-800/50">
-          <div className="flex items-center gap-2">
-            <Button
-              size="sm"
-              variant="primary"
-              onClick={() => setIsNewChatOpen(true)}
-              className="flex-1 text-xs"
-              leftIcon={<MessageSquarePlus className="w-3.5 h-3.5" />}
-            >
-              New Chat
-            </Button>
-            <Button
-              size="sm"
-              variant="secondary"
-              onClick={() => setIsCreateGroupOpen(true)}
-              className="flex-1 text-xs"
-              leftIcon={<Users className="w-3.5 h-3.5" />}
-            >
-              New Group
-            </Button>
-          </div>
-
-          {/* Search Box */}
+        {/* Search Bar */}
+        <div className="p-3 border-b border-zinc-100 dark:border-zinc-800/50">
           <div className="relative">
             <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input

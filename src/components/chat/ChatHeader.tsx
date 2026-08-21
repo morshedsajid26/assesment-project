@@ -2,27 +2,22 @@
 
 import React, { useState } from "react";
 import { Avatar } from "@/src/components/ui/Avatar";
-import { Dropdown } from "@/src/components/ui/Dropdown";
 import { GroupInfoModal } from "@/src/components/modals/GroupInfoModal";
 import { Conversation, User } from "@/src/types";
-import {
-  ChevronLeft,
-  Info,
-  MoreVertical,
-  RefreshCw,
-  Users,
-} from "lucide-react";
+import { ChevronLeft, Info } from "lucide-react";
 
 export interface ChatHeaderProps {
   conversation: Conversation;
   currentUser: User | null;
   onBack?: () => void;
-  onRefreshMessages: () => void;
+  onRefreshMessages?: () => void;
   onRenameGroup: (conversationId: string, name: string) => Promise<any>;
   onAddParticipants: (
     conversationId: string,
     userIds: string[],
   ) => Promise<any>;
+  onPromoteAdmin: (conversationId: string, userId: string) => Promise<any>;
+  onRemoveMember: (conversationId: string, userId: string) => Promise<any>;
   onLeaveGroup: (conversationId: string, userId: string) => Promise<any>;
 }
 
@@ -30,9 +25,10 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
   conversation,
   currentUser,
   onBack,
-  onRefreshMessages,
   onRenameGroup,
   onAddParticipants,
+  onPromoteAdmin,
+  onRemoveMember,
   onLeaveGroup,
 }) => {
   const [isGroupInfoOpen, setIsGroupInfoOpen] = useState(false);
@@ -65,28 +61,9 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
     }
   }
 
-  const dropdownItems = [
-    {
-      id: "refresh",
-      label: "Refresh messages",
-      icon: <RefreshCw className="w-3.5 h-3.5" />,
-      onClick: onRefreshMessages,
-    },
-    ...(isGroup
-      ? [
-          {
-            id: "info",
-            label: "Group info",
-            icon: <Info className="w-3.5 h-3.5" />,
-            onClick: () => setIsGroupInfoOpen(true),
-          },
-        ]
-      : []),
-  ];
-
   return (
     <>
-      <header className="h-16 px-4 md:px-6 bg-white dark:bg-zinc-900 border-b border-zinc-200/80 dark:border-zinc-800 flex items-center justify-between z-10 shrink-0">
+      <header className="h-18 px-4 md:px-6 bg-white dark:bg-zinc-900 border-b border-zinc-200/80 dark:border-zinc-800 flex items-center justify-between z-10 shrink-0">
         <div className="flex items-center gap-3 min-w-0">
           {/* Mobile Back Button */}
           {onBack && (
@@ -136,24 +113,13 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
           {isGroup && (
             <button
               onClick={() => setIsGroupInfoOpen(true)}
-              className="p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              className="p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
               title="Group Information"
+              aria-label="Group Information"
             >
-              <Info className="w-4 h-4" />
+              <Info className="w-5 h-5" />
             </button>
           )}
-
-          <Dropdown
-            trigger={
-              <button
-                className="p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none"
-                aria-label="More actions"
-              >
-                <MoreVertical className="w-4 h-4" />
-              </button>
-            }
-            items={dropdownItems}
-          />
         </div>
       </header>
 
@@ -166,6 +132,8 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
           currentUser={currentUser}
           onRenameGroup={onRenameGroup}
           onAddParticipants={onAddParticipants}
+          onPromoteAdmin={onPromoteAdmin}
+          onRemoveMember={onRemoveMember}
           onLeaveGroup={onLeaveGroup}
         />
       )}

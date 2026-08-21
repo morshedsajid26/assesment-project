@@ -23,7 +23,9 @@ export default function ChatDashboardPage() {
     createGroupConversation,
     renameGroup,
     addParticipants,
-    removeParticipant,
+    promoteToAdmin,
+    removeMember,
+    leaveGroup,
     updateConversationLastMessage,
   } = useConversations();
 
@@ -115,10 +117,9 @@ export default function ChatDashboardPage() {
             onUpdateLastMessage={updateConversationLastMessage}
             onRenameGroup={renameGroup}
             onAddParticipants={addParticipants}
-            onLeaveGroup={async (convId, userId) => {
-              await removeParticipant(convId, userId);
-              setActiveConversationId(null);
-            }}
+            onPromoteAdmin={promoteToAdmin}
+            onRemoveMember={removeMember}
+            onLeaveGroup={leaveGroup}
             incomingSocketMessage={latestSocketMessage}
           />
         ) : (

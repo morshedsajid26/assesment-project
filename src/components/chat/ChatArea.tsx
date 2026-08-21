@@ -20,6 +20,8 @@ export interface ChatAreaProps {
     conversationId: string,
     userIds: string[],
   ) => Promise<any>;
+  onPromoteAdmin: (conversationId: string, userId: string) => Promise<any>;
+  onRemoveMember: (conversationId: string, userId: string) => Promise<any>;
   onLeaveGroup: (conversationId: string, userId: string) => Promise<any>;
   incomingSocketMessage?: Message | null;
 }
@@ -31,6 +33,8 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
   onUpdateLastMessage,
   onRenameGroup,
   onAddParticipants,
+  onPromoteAdmin,
+  onRemoveMember,
   onLeaveGroup,
   incomingSocketMessage,
 }) => {
@@ -76,6 +80,8 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
         }}
         onRenameGroup={onRenameGroup}
         onAddParticipants={onAddParticipants}
+        onPromoteAdmin={onPromoteAdmin}
+        onRemoveMember={onRemoveMember}
         onLeaveGroup={onLeaveGroup}
       />
 
