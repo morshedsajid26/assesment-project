@@ -110,9 +110,9 @@ export const MessageList: React.FC<MessageListProps> = ({
         onScroll={onScroll}
         className="flex-1 overflow-y-auto"
       >
-        <div className="min-h-full flex flex-col justify-end py-4 px-2 sm:px-4 space-y-4">
+        <div className="min-h-full flex flex-col justify-end py-4 px-4 sm:px-6 md:px-8">
           {groupedMessages.map((group, groupIndex) => (
-            <div key={group.dateKey || groupIndex} className="space-y-1">
+            <div key={group.dateKey || groupIndex}>
               {/* Date divider pill */}
               <div className="flex items-center justify-center my-3">
                 <span className="px-3.5 py-1 rounded-full text-[11px] font-semibold bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm border border-slate-200/80 dark:border-zinc-700/60 text-zinc-600 dark:text-zinc-400 select-none shadow-xs">
@@ -126,7 +126,7 @@ export const MessageList: React.FC<MessageListProps> = ({
                   typeof msg.sender === "object" ? msg.sender._id : msg.sender;
                 const isMe = currentUser ? senderId === currentUser._id : false;
 
-                // Check if previous message had same sender to collapse sender name in groups
+                // Check if previous message had same sender
                 const prevMsg = group.items[index - 1];
                 const prevSenderId = prevMsg
                   ? typeof prevMsg.sender === "object"
@@ -142,6 +142,7 @@ export const MessageList: React.FC<MessageListProps> = ({
                     key={msg._id || index}
                     message={msg}
                     isMe={isMe}
+                    isConsecutive={isConsecutive}
                     showSenderHeader={isGroup && !isMe && !isConsecutive}
                     senderUser={senderUser}
                   />

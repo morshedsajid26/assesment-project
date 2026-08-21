@@ -11,6 +11,7 @@ export interface MessageBubbleProps {
   isMe: boolean;
   showSenderHeader?: boolean;
   senderUser?: User;
+  isConsecutive?: boolean;
 }
 
 export const MessageBubble: React.FC<MessageBubbleProps> = ({
@@ -18,6 +19,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
   isMe,
   showSenderHeader = false,
   senderUser,
+  isConsecutive = false,
 }) => {
   const senderName =
     senderUser?.name ||
@@ -25,32 +27,30 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   return (
     <div
-      className={`flex items-end gap-2 my-1 px-4 ${
+      className={`w-full flex items-end gap-1.5 sm:gap-2 ${
+        isConsecutive ? "mt-2" : "mt-2"
+      } ${
         isMe ? "justify-end" : "justify-start"
       } animate-in fade-in slide-in-from-bottom-1 duration-150`}
     >
-      {/* Received message avatar (if group and showSenderHeader) */}
-      {!isMe && (
-        <div className="w-7 shrink-0">
-          {showSenderHeader ? (
-            <Avatar
-              name={senderName}
-              seedId={
-                typeof message.sender === "string"
-                  ? message.sender
-                  : message.sender?._id
-              }
-              size="xs"
-            />
-          ) : (
-            <div className="w-7" />
-          )}
+      {/* Received message avatar (only in group chats when showing sender header) */}
+      {!isMe && showSenderHeader && (
+        <div className="w-6 sm:w-7 shrink-0 mb-1">
+          <Avatar
+            name={senderName}
+            seedId={
+              typeof message.sender === "string"
+                ? message.sender
+                : message.sender?._id
+            }
+            size="xs"
+          />
         </div>
       )}
 
       {/* Bubble Container */}
       <div
-        className={`max-w-[78%] md:max-w-[65%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed transition-all ${
+        className={`max-w-[85%] sm:max-w-[85%] md:max-w-[65%] rounded-2xl px-3.5 sm:px-4 py-2 sm:py-2.5 text-sm leading-relaxed transition-all ${
           isMe
             ? "bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white rounded-br-xs shadow-md shadow-blue-500/20"
             : "bg-white/95 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border border-slate-200/90 dark:border-zinc-700/60 rounded-bl-xs shadow-sm shadow-slate-200/60"

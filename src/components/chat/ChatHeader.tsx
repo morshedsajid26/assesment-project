@@ -64,7 +64,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
 
   return (
     <>
-      <header className="h-18 px-4 md:px-6 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-b border-slate-200/90 dark:border-zinc-800 flex items-center justify-between z-10 shrink-0 shadow-xs">
+      <header className="h-18 px-4 sm:px-6 md:px-8 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-b border-slate-200/90 dark:border-zinc-800 flex items-center justify-between z-10 shrink-0 shadow-xs">
         <div className="flex items-center gap-3 min-w-0">
           {/* Mobile Back Button */}
           {onBack && (
