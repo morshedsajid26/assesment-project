@@ -13,7 +13,7 @@ export const useAuth = () => {
     setError(null);
     try {
       const data = await auth.login(phone, name);
-      router.push("/");
+      router.push("/chat");
       return data;
     } catch (err: any) {
       const message =

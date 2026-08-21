@@ -1,135 +1,58 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
-import { Sidebar } from "@/src/components/chat/Sidebar";
-import { ChatArea } from "@/src/components/chat/ChatArea";
-import { EmptyState } from "@/src/components/chat/EmptyState";
-import { useAuthContext } from "@/src/context/AuthContext";
-import { useConversations } from "@/src/hooks/useConversations";
-import { useSocket } from "@/src/hooks/useSocket";
-import { Message } from "@/src/types";
-import { Spinner } from "@/src/components/ui/Spinner";
+import React from "react";
+import { LandingNavbar } from "@/src/components/landing/LandingNavbar";
+import { HeroSection } from "@/src/components/landing/HeroSection";
+import { StatsStrip } from "@/src/components/landing/StatsStrip";
+import { BentoFeatures } from "@/src/components/landing/BentoFeatures";
+import { HowItWorks } from "@/src/components/landing/HowItWorks";
+import { FeatureDeepDive } from "@/src/components/landing/FeatureDeepDive";
+import { TestimonialsSection } from "@/src/components/landing/TestimonialsSection";
+import { FaqSection } from "@/src/components/landing/FaqSection";
+import { CtaSection } from "@/src/components/landing/CtaSection";
+import { LandingFooter } from "@/src/components/landing/LandingFooter";
 
-export default function ChatDashboardPage() {
-  const { user, token, loading: authLoading, logout } = useAuthContext();
-  const {
-    conversations,
-    activeConversationId,
-    activeConversation,
-    loading: convsLoading,
-    setActiveConversationId,
-    fetchConversations,
-    startDirectConversation,
-    createGroupConversation,
-    renameGroup,
-    addParticipants,
-    promoteToAdmin,
-    removeMember,
-    leaveGroup,
-    updateConversationLastMessage,
-  } = useConversations();
-
-  const [latestSocketMessage, setLatestSocketMessage] =
-    useState<Message | null>(null);
-
-  // Load conversations on mount
-  useEffect(() => {
-    if (token) {
-      fetchConversations();
-    }
-  }, [token, fetchConversations]);
-
-  // Real-time message listener callback
-  const handleMessageReceived = useCallback(
-    (message: Message) => {
-      setLatestSocketMessage(message);
-      updateConversationLastMessage(message.conversation, {
-        text: message.text,
-        sender: message.sender,
-        createdAt: message.createdAt,
-      });
-    },
-    [updateConversationLastMessage],
-  );
-
-  // Initialize socket connection & background sync
-  useSocket({
-    token,
-    activeConversationId,
-    onMessageReceived: handleMessageReceived,
-    onRefreshConversations: fetchConversations,
-  });
-
-  // Loading state while checking auth cookie
-  if (authLoading) {
-    return (
-      <div
-        className="h-screen w-full flex items-center justify-center bg-zinc-50 dark:bg-zinc-950"
-        suppressHydrationWarning
-      >
-        <div className="flex flex-col items-center gap-3" suppressHydrationWarning>
-          <Spinner size="lg" />
-          <p className="text-xs font-medium text-zinc-500">
-            Loading ChatApp...
-          </p>
-        </div>
-      </div>
-    );
-  }
-
+export default function LandingPage() {
   return (
-    <main
-      className="h-screen w-full flex overflow-hidden bg-white dark:bg-zinc-900"
+    <div
+      className="min-h-screen w-full bg-slate-50/80 dark:bg-zinc-950 text-slate-900 dark:text-zinc-50 overflow-x-hidden selection:bg-blue-600 selection:text-white relative"
       suppressHydrationWarning
     >
-      {/* Left Sidebar: hidden on mobile if a conversation is open */}
-      <div
-        className={`w-full md:w-80 lg:w-96 shrink-0 h-full ${
-          activeConversationId ? "hidden md:flex" : "flex"
-        }`}
-        suppressHydrationWarning
-      >
-        <Sidebar
-          conversations={conversations}
-          activeConversationId={activeConversationId}
-          loading={convsLoading}
-          currentUser={user}
-          onSelectConversation={(id) => setActiveConversationId(id)}
-          onStartDirect={startDirectConversation}
-          onCreateGroup={createGroupConversation}
-          onRefresh={fetchConversations}
-          onLogout={logout}
-          className="w-full"
-        />
-      </div>
+      {/* Dynamic Ambient Background Mesh for Light & Dark Mode */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(59,130,246,0.14),rgba(255,255,255,0))] dark:bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(59,130,246,0.08),rgba(0,0,0,0))] pointer-events-none" />
+      <div className="absolute top-[22%] left-1/2 -translate-x-1/2 w-full max-w-7xl h-[700px] bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(99,102,241,0.09),rgba(255,255,255,0))] dark:bg-transparent pointer-events-none" />
+      <div className="absolute top-[50%] right-0 w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(236,72,153,0.06),rgba(255,255,255,0))] dark:bg-transparent pointer-events-none" />
+      <div className="absolute top-[75%] left-0 w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.06),rgba(255,255,255,0))] dark:bg-transparent pointer-events-none" />
 
-      {/* Right Chat Area: hidden on mobile if no conversation is open */}
-      <div
-        className={`flex-1 h-full min-w-0 ${
-          !activeConversationId ? "hidden md:flex" : "flex"
-        }`}
-      >
-        {activeConversation ? (
-          <ChatArea
-            conversation={activeConversation}
-            currentUser={user}
-            onBack={() => setActiveConversationId(null)}
-            onUpdateLastMessage={updateConversationLastMessage}
-            onRenameGroup={renameGroup}
-            onAddParticipants={addParticipants}
-            onPromoteAdmin={promoteToAdmin}
-            onRemoveMember={removeMember}
-            onLeaveGroup={leaveGroup}
-            incomingSocketMessage={latestSocketMessage}
-          />
-        ) : (
-          <EmptyState
-            onStartDirect={startDirectConversation}
-            onCreateGroup={createGroupConversation}
-            currentUserId={user?._id}
-          />
-        )}
-      </div>
-    </main>
+      {/* Sticky Navbar */}
+      <LandingNavbar />
+
+      {/* 1. Hero Section with Interactive Mockup */}
+      <HeroSection />
+
+      {/* 2. Key Performance Stats Strip */}
+      <StatsStrip />
+
+      {/* 3. Bento Grid Core Features */}
+      <BentoFeatures />
+
+      {/* 4. How It Works (3 Simple Steps) */}
+      <HowItWorks />
+
+      {/* 5. Interactive Feature Deep Dive */}
+      <FeatureDeepDive />
+
+      {/* 6. Community Testimonials / Social Proof */}
+      <TestimonialsSection />
+
+      {/* 7. Frequently Asked Questions (FAQ Accordion) */}
+      <FaqSection />
+
+      {/* 8. Final Call to Action */}
+      <CtaSection />
+
+      {/* 9. Minimal Footer */}
+      <LandingFooter />
+    </div>
   );
 }

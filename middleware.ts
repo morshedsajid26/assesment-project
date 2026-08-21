@@ -4,17 +4,18 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("chat_token")?.value;
   const isAuthPage = request.nextUrl.pathname.startsWith("/login");
+  const isChatDashboard = request.nextUrl.pathname.startsWith("/chat");
 
-  // If user is not authenticated and is trying to access protected chat pages
-  if (!token && !isAuthPage) {
+  // Protect /chat route
+  if (!token && isChatDashboard) {
     const loginUrl = new URL("/login", request.url);
     return NextResponse.redirect(loginUrl);
   }
 
   // If user is already authenticated and visits /login
   if (token && isAuthPage) {
-    const homeUrl = new URL("/", request.url);
-    return NextResponse.redirect(homeUrl);
+    const chatUrl = new URL("/chat", request.url);
+    return NextResponse.redirect(chatUrl);
   }
 
   return NextResponse.next();

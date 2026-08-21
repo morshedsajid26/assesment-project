@@ -48,7 +48,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className="h-full w-full overflow-hidden bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50"
+        className="min-h-full w-full bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50"
         suppressHydrationWarning
       >
         <QueryProvider>

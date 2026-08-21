@@ -3,8 +3,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #0f172a;
   color-scheme: light;
 }
 
@@ -19,6 +19,11 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
@@ -105,5 +110,33 @@ select:-webkit-autofill {
   -webkit-text-fill-color: #f4f4f5 !important;
   -webkit-box-shadow: 0 0 0px 1000px #18181b inset !important;
   transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ==========================================================================
+   Slick Carousel Dots Customization
+   ========================================================================== */
+
+.testimonial-slider .slick-dots {
+  bottom: -35px;
+}
+.testimonial-slider .slick-dots li {
+  margin: 0 3px;
+}
+.testimonial-slider .slick-dots li button:before {
+  font-size: 8px;
+  color: #94a3b8;
+  opacity: 0.5;
+  transition: all 0.2s ease;
+}
+.testimonial-slider .slick-dots li.slick-active button:before {
+  color: #2563eb;
+  opacity: 1;
+  font-size: 10px;
+}
+.dark .testimonial-slider .slick-dots li button:before {
+  color: #71717a;
+}
+.dark .testimonial-slider .slick-dots li.slick-active button:before {
+  color: #3b82f6;
 }
 
