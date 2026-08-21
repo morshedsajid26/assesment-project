@@ -39,14 +39,22 @@ export const MessageList: React.FC<MessageListProps> = ({
     return map;
   }, [conversation]);
 
-  const { containerRef, showScrollButton, scrollToBottom, onScroll } =
-    useScrollToBottom<HTMLDivElement>([messages.length, conversation._id]);
+  const { containerRef, bottomRef, showScrollButton, scrollToBottom, onScroll } =
+    useScrollToBottom<HTMLDivElement>({
+      conversationId: conversation._id,
+      itemsCount: messages.length,
+      lastMessageId: messages[messages.length - 1]?._id,
+    });
 
-  // Group messages by Date Divider
+  // Group messages by Date Divider (always sorted chronologically ascending)
   const groupedMessages = useMemo(() => {
+    const sorted = [...messages].sort(
+      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
+
     const groups: { dateKey: string; items: Message[] }[] = [];
 
-    messages.forEach((msg) => {
+    sorted.forEach((msg) => {
       const dateKey = formatDateDivider(msg.createdAt);
       const lastGroup = groups[groups.length - 1];
 
@@ -100,46 +108,50 @@ export const MessageList: React.FC<MessageListProps> = ({
       <div
         ref={containerRef}
         onScroll={onScroll}
-        className="flex-1 overflow-y-auto py-4 space-y-4"
+        className="flex-1 overflow-y-auto"
       >
-        {groupedMessages.map((group, groupIndex) => (
-          <div key={group.dateKey || groupIndex} className="space-y-1">
-            {/* Date divider pill */}
-            <div className="flex items-center justify-center my-3">
-              <span className="px-3 py-1 rounded-full text-[11px] font-semibold bg-zinc-200/70 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 select-none shadow-xs">
-                {group.dateKey}
-              </span>
+        <div className="min-h-full flex flex-col justify-end py-4 px-2 sm:px-4 space-y-4">
+          {groupedMessages.map((group, groupIndex) => (
+            <div key={group.dateKey || groupIndex} className="space-y-1">
+              {/* Date divider pill */}
+              <div className="flex items-center justify-center my-3">
+                <span className="px-3 py-1 rounded-full text-[11px] font-semibold bg-zinc-200/70 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 select-none shadow-xs">
+                  {group.dateKey}
+                </span>
+              </div>
+
+              {/* Messages in this group */}
+              {group.items.map((msg, index) => {
+                const senderId =
+                  typeof msg.sender === "object" ? msg.sender._id : msg.sender;
+                const isMe = currentUser ? senderId === currentUser._id : false;
+
+                // Check if previous message had same sender to collapse sender name in groups
+                const prevMsg = group.items[index - 1];
+                const prevSenderId = prevMsg
+                  ? typeof prevMsg.sender === "object"
+                    ? prevMsg.sender._id
+                    : prevMsg.sender
+                  : null;
+                const isConsecutive = prevSenderId === senderId;
+
+                const senderUser = participantsMap.get(senderId);
+
+                return (
+                  <MessageBubble
+                    key={msg._id || index}
+                    message={msg}
+                    isMe={isMe}
+                    showSenderHeader={isGroup && !isMe && !isConsecutive}
+                    senderUser={senderUser}
+                  />
+                );
+              })}
             </div>
-
-            {/* Messages in this group */}
-            {group.items.map((msg, index) => {
-              const senderId =
-                typeof msg.sender === "object" ? msg.sender._id : msg.sender;
-              const isMe = currentUser ? senderId === currentUser._id : false;
-
-              // Check if previous message had same sender to collapse sender name in groups
-              const prevMsg = group.items[index - 1];
-              const prevSenderId = prevMsg
-                ? typeof prevMsg.sender === "object"
-                  ? prevMsg.sender._id
-                  : prevMsg.sender
-                : null;
-              const isConsecutive = prevSenderId === senderId;
-
-              const senderUser = participantsMap.get(senderId);
-
-              return (
-                <MessageBubble
-                  key={msg._id || index}
-                  message={msg}
-                  isMe={isMe}
-                  showSenderHeader={isGroup && !isMe && !isConsecutive}
-                  senderUser={senderUser}
-                />
-              );
-            })}
-          </div>
-        ))}
+          ))}
+          {/* Bottom anchor for smooth scroll references */}
+          <div ref={bottomRef} className="h-px w-full" />
+        </div>
       </div>
 
       {/* Floating Scroll to Bottom Button */}

@@ -21,7 +21,10 @@ export const useMessages = (conversationId: string | null, currentUser: User | n
     queryFn: async () => {
       if (!conversationId) return [];
       const res = await axios.get<MessagesResponse>(`/conversations/${conversationId}/messages`);
-      return res.data?.messages || [];
+      const list = res.data?.messages || [];
+      return [...list].sort(
+        (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
     },
     enabled: !!conversationId,
   });
@@ -84,12 +87,17 @@ export const useMessages = (conversationId: string | null, currentUser: User | n
             m._id === newMsg._id ||
             (m.status === "pending" && m.text === newMsg.text && m.sender === newMsg.sender)
         );
+        let updated: Message[];
         if (exists) {
-          return old.map((m) =>
+          updated = old.map((m) =>
             m.text === newMsg.text && m.status === "pending" ? { ...newMsg, status: "sent" } : m
           );
+        } else {
+          updated = [...old, { ...newMsg, status: "sent" }];
         }
-        return [...old, { ...newMsg, status: "sent" }];
+        return updated.sort(
+          (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
       });
     },
     [conversationId, queryClient]
