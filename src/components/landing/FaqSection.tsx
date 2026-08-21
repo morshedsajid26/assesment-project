@@ -35,7 +35,10 @@ export const FaqSection: React.FC = () => {
   };
 
   return (
-    <section id="faq" className="py-24 bg-white/40 dark:bg-zinc-950/50 border-t border-slate-200/80 dark:border-zinc-800/80 relative z-10 scroll-mt-20">
+    <section
+      id="faq"
+      className="py-24 bg-white/40 dark:bg-zinc-950/50 border-t border-slate-200/80 dark:border-zinc-800/80 relative z-10 scroll-mt-20"
+    >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
@@ -46,7 +49,8 @@ export const FaqSection: React.FC = () => {
             Frequently Asked Questions
           </h2>
           <p className="mt-3 text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
-            Everything you need to know about ChatApp's features, speed, and security.
+            Everything you need to know about ChatApp's features, speed, and
+            security.
           </p>
         </div>
 
@@ -59,7 +63,7 @@ export const FaqSection: React.FC = () => {
                 key={faq.q}
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: false }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 className={`rounded-2xl transition-all duration-300 ${
                   isOpen

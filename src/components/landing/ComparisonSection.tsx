@@ -39,7 +39,10 @@ export const ComparisonSection: React.FC = () => {
   ];
 
   return (
-    <section id="comparison" className="py-24 bg-white/40 dark:bg-zinc-950/50 border-t border-slate-200/80 dark:border-zinc-800/80 relative z-10 scroll-mt-20">
+    <section
+      id="comparison"
+      className="py-24 bg-white/40 dark:bg-zinc-950/50 border-t border-slate-200/80 dark:border-zinc-800/80 relative z-10 scroll-mt-20"
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/60 mb-3">
@@ -57,7 +60,7 @@ export const ComparisonSection: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: 0.5 }}
           className="rounded-3xl bg-gradient-to-br from-white via-slate-50/95 to-blue-50/20 dark:from-zinc-900/90 dark:via-zinc-900/80 dark:to-zinc-950/50 backdrop-blur-2xl border border-slate-200/90 dark:border-zinc-800 shadow-[0_20px_50px_-15px_rgba(59,130,246,0.1)] overflow-hidden"
         >
@@ -80,7 +83,11 @@ export const ComparisonSection: React.FC = () => {
                 {rows.map((row, index) => (
                   <tr
                     key={row.feature}
-                    className={index % 2 === 0 ? "bg-transparent" : "bg-slate-50/40 dark:bg-zinc-900/30"}
+                    className={
+                      index % 2 === 0
+                        ? "bg-transparent"
+                        : "bg-slate-50/40 dark:bg-zinc-900/30"
+                    }
                   >
                     <td className="py-4 px-6 font-bold text-zinc-900 dark:text-zinc-100">
                       {row.feature}

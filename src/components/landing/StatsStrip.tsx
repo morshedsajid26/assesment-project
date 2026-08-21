@@ -45,11 +45,13 @@ export const StatsStrip: React.FC = () => {
               key={stat.label}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/60 backdrop-blur-md border border-slate-200/80 dark:border-zinc-800/70 shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-zinc-700 hover:-translate-y-0.5 transition-all"
             >
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${stat.bg}`}>
+              <div
+                className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${stat.bg}`}
+              >
                 {stat.icon}
               </div>
               <div className="text-2xl lg:text-3xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight">

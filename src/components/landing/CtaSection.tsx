@@ -7,12 +7,15 @@ import { Zap, ArrowRight, MessageSquare, Shield, Users } from "lucide-react";
 
 export const CtaSection: React.FC = () => {
   return (
-    <section id="get-started" className="py-14 relative z-10 scroll-mt-20 overflow-hidden">
+    <section
+      id="get-started"
+      className="py-14 relative z-10 scroll-mt-20 overflow-hidden"
+    >
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: 0.5 }}
           className="relative rounded-3xl p-8 sm:p-10 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-700 text-white shadow-[0_20px_60px_-15px_rgba(79,70,229,0.35)] border border-white/20 overflow-hidden text-center"
         >
@@ -38,7 +41,8 @@ export const CtaSection: React.FC = () => {
 
             {/* Subtitle */}
             <p className="text-xs sm:text-sm text-blue-100/90 leading-relaxed max-w-md mx-auto">
-              Real-time messaging with sub-50ms WebSocket delivery. No passwords or delays — get started in seconds.
+              Real-time messaging with sub-50ms WebSocket delivery. No passwords
+              or delays — get started in seconds.
             </p>
 
             {/* Action CTA Button */}

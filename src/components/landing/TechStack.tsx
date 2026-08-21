@@ -56,7 +56,7 @@ export const TechStack: React.FC = () => {
               key={item.name}
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.4, delay: index * 0.08 }}
               className="p-5 rounded-2xl bg-white/80 dark:bg-zinc-900/70 backdrop-blur-md border border-slate-200/80 dark:border-zinc-800 shadow-xs hover:border-blue-400 dark:hover:border-blue-600/60 transition-colors"
             >

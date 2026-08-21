@@ -44,7 +44,8 @@ export const HowItWorks: React.FC = () => {
             How ChatApp Works
           </h2>
           <p className="mt-4 text-base sm:text-lg text-zinc-600 dark:text-zinc-400">
-            Get up and running in less than 10 seconds. Built for zero friction and ultimate speed.
+            Get up and running in less than 10 seconds. Built for zero friction
+            and ultimate speed.
           </p>
         </div>
 
@@ -55,14 +56,16 @@ export const HowItWorks: React.FC = () => {
               key={step.number}
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.5, delay: index * 0.15 }}
               className="relative p-8 rounded-3xl bg-gradient-to-br from-white via-slate-50/90 to-blue-50/20 dark:from-zinc-900/90 dark:via-zinc-900/70 dark:to-zinc-950/40 backdrop-blur-xl border border-slate-200/90 dark:border-zinc-800 shadow-[0_15px_35px_-10px_rgba(59,130,246,0.08)] dark:shadow-xl flex flex-col justify-between group hover:-translate-y-1 hover:border-blue-300 dark:hover:border-zinc-700 transition-all"
             >
               {/* Top Step Pill & Icon */}
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border ${step.bg} shadow-xs group-hover:scale-105 transition-transform`}>
+                  <div
+                    className={`w-14 h-14 rounded-2xl flex items-center justify-center border ${step.bg} shadow-xs group-hover:scale-105 transition-transform`}
+                  >
                     {step.icon}
                   </div>
                   <span className="text-4xl font-black text-slate-200 dark:text-zinc-800 font-mono tracking-tighter">
