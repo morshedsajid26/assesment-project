@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, ArrowRight, Menu, X, Sparkles, Zap } from "lucide-react";
+import { ArrowRight, Menu, X, Sparkles, Zap } from "lucide-react";
 import { ThemeToggle } from "@/src/components/ui/ThemeToggle";
 import { useAuthContext } from "@/src/context/AuthContext";
+import { BrandLogo } from "@/src/components/ui/BrandLogo";
 
 export const LandingNavbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -26,23 +27,15 @@ export const LandingNavbar: React.FC = () => {
       setScrolled(window.scrollY > 20);
 
       // Simple active section detection
-      const sections = [
-        "hero",
-        "features",
-        "how-it-works",
-        "demo",
-        "testimonials",
-        "faq",
-        "get-started",
-      ];
-      const scrollPos = window.scrollY + 200;
+      const sections = ["faq", "testimonials", "how-it-works", "features", "hero"];
+      const scrollPosition = window.scrollY + 200;
 
       for (const sectionId of sections) {
-        const el = document.getElementById(sectionId);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const top = element.offsetTop;
+          const height = element.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
             setActiveSection(sectionId);
             break;
           }
@@ -90,18 +83,11 @@ export const LandingNavbar: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
         {/* Brand Logo */}
-        <Link
+        <BrandLogo
           href="#hero"
           onClick={(e) => handleScrollTo(e, "#hero")}
-          className="flex items-center gap-2.5 group select-none shrink-0"
-        >
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/25 group-hover:scale-105 transition-transform">
-            <MessageSquare className="w-5 h-5" />
-          </div>
-          <span className="font-extrabold text-xl tracking-tight text-zinc-900 dark:text-white">
-            ChatApp
-          </span>
-        </Link>
+          size="md"
+        />
 
         {/* Desktop Nav Links */}
         <nav className="hidden lg:flex items-center gap-1 p-1 rounded-full bg-slate-100/70 dark:bg-zinc-900/70 border border-slate-200/60 dark:border-zinc-800 backdrop-blur-md shrink-0">

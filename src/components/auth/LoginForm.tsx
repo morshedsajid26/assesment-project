@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { InputField } from "@/src/components/ui/InputField";
 import { Button } from "@/src/components/ui/Button";
 import { useAuth } from "@/src/hooks/useAuth";
+import { BrandLogo } from "@/src/components/ui/BrandLogo";
 import {
-  MessageSquare,
   Phone,
   User as UserIcon,
   Sparkles,
@@ -67,9 +68,7 @@ export const LoginForm: React.FC = () => {
     >
       {/* Brand Header */}
       <div className="flex flex-col items-center text-center mb-8">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-xl shadow-blue-500/35 mb-4 ring-4 ring-blue-500/15">
-          <MessageSquare className="w-8 h-8" />
-        </div>
+        <BrandLogo href="/" size="lg" className="mb-4" />
         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
           Welcome to ChatApp
         </h1>
