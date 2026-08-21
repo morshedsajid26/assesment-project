@@ -52,10 +52,14 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
       onClick={onClick}
       className={`group relative flex items-center gap-3.5 p-3 rounded-2xl cursor-pointer transition-all duration-150 select-none ${
         isActive
-          ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/25 dark:shadow-blue-600/15"
-          : "hover:bg-slate-100/90 dark:hover:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100"
+          ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/25 dark:shadow-blue-600/20"
+          : "hover:bg-slate-100/90 dark:hover:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100 hover:translate-x-0.5"
       }`}
     >
+      {/* Active Left Indicator */}
+      {isActive && (
+        <span className="absolute -left-1 top-3.5 bottom-3.5 w-1.5 bg-blue-300 rounded-full shadow-xs" />
+      )}
       {/* Avatar */}
       <Avatar
         name={displayName}

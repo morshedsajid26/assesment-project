@@ -99,17 +99,18 @@ export function getInitials(name?: string): string {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-// Deterministic pastel color palette for user avatars based on name/id
+// Deterministic vibrant gradient color palette for user avatars based on name/id
 const AVATAR_COLORS = [
-  "bg-blue-500 text-white",
-  "bg-emerald-500 text-white",
-  "bg-indigo-500 text-white",
-  "bg-purple-500 text-white",
-  "bg-rose-500 text-white",
-  "bg-amber-500 text-white",
-  "bg-teal-500 text-white",
-  "bg-cyan-500 text-white",
-  "bg-fuchsia-500 text-white",
+  "bg-gradient-to-tr from-blue-600 to-cyan-400 text-white shadow-sm shadow-blue-500/20",
+  "bg-gradient-to-tr from-emerald-600 to-teal-400 text-white shadow-sm shadow-emerald-500/20",
+  "bg-gradient-to-tr from-indigo-600 to-blue-400 text-white shadow-sm shadow-indigo-500/20",
+  "bg-gradient-to-tr from-purple-600 to-pink-400 text-white shadow-sm shadow-purple-500/20",
+  "bg-gradient-to-tr from-rose-600 to-orange-400 text-white shadow-sm shadow-rose-500/20",
+  "bg-gradient-to-tr from-amber-600 to-yellow-400 text-white shadow-sm shadow-amber-500/20",
+  "bg-gradient-to-tr from-teal-600 to-emerald-400 text-white shadow-sm shadow-teal-500/20",
+  "bg-gradient-to-tr from-cyan-600 to-blue-400 text-white shadow-sm shadow-cyan-500/20",
+  "bg-gradient-to-tr from-violet-600 to-indigo-400 text-white shadow-sm shadow-violet-500/20",
+  "bg-gradient-to-tr from-fuchsia-600 to-rose-400 text-white shadow-sm shadow-fuchsia-500/20",
 ];
 
 export function getAvatarColor(seed?: string): string {

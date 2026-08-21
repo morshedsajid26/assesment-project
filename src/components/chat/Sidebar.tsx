@@ -17,6 +17,7 @@ import {
   LogOut,
   MessageCircle,
   MessagesSquare,
+  X,
 } from "lucide-react";
 import { Conversation, User } from "@/src/types";
 import { ThreeUsersIcon } from "../ui/ThreeUsersIcon";
@@ -48,14 +49,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
   className = "",
 }) => {
   const [filterQuery, setFilterQuery] = useState("");
+  const [filterTab, setFilterTab] = useState<"all" | "direct" | "groups">("all");
   const [isNewChatOpen, setIsNewChatOpen] = useState(false);
   const [isCreateGroupOpen, setIsCreateGroupOpen] = useState(false);
 
-  // Filter conversations locally by name
+  // Filter conversations by search and tab
   const filteredConversations = useMemo(() => {
-    if (!filterQuery.trim()) return conversations;
+    let list = conversations;
+
+    if (filterTab === "direct") {
+      list = list.filter((c) => c.type !== "group");
+    } else if (filterTab === "groups") {
+      list = list.filter((c) => c.type === "group");
+    }
+
+    if (!filterQuery.trim()) return list;
     const query = filterQuery.toLowerCase();
-    return conversations.filter((c) => {
+    return list.filter((c) => {
       if (c.type === "group") {
         return c.name?.toLowerCase().includes(query);
       }
@@ -74,7 +84,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
       }
       return false;
     });
-  }, [conversations, filterQuery]);
+  }, [conversations, filterQuery, filterTab]);
+
+  const directCount = useMemo(
+    () => conversations.filter((c) => c.type !== "group").length,
+    [conversations],
+  );
+  const groupCount = useMemo(
+    () => conversations.filter((c) => c.type === "group").length,
+    [conversations],
+  );
 
   const userMenuItems = [
     {
@@ -140,7 +159,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Search Bar */}
-        <div className="p-3 border-b border-slate-200/60 dark:border-zinc-800/50">
+        <div className="px-3 pt-3 pb-2">
           <div className="relative">
             <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
@@ -148,9 +167,51 @@ export const Sidebar: React.FC<SidebarProps> = ({
               placeholder="Search chats..."
               value={filterQuery}
               onChange={(e) => setFilterQuery(e.target.value)}
-              className="w-full rounded-xl bg-slate-100/90 dark:bg-zinc-800/60 border border-slate-200/80 dark:border-transparent focus:border-blue-500 focus:bg-white dark:focus:bg-zinc-900 focus:ring-2 focus:ring-blue-500/15 text-xs text-zinc-900 dark:text-zinc-100 pl-9 pr-3 py-2 outline-none transition-all placeholder:text-zinc-400 shadow-2xs"
+              className="w-full rounded-xl bg-slate-100/90 dark:bg-zinc-800/60 border border-slate-200/80 dark:border-transparent focus:border-blue-500 focus:bg-white dark:focus:bg-zinc-900 focus:ring-2 focus:ring-blue-500/15 text-xs text-zinc-900 dark:text-zinc-100 pl-9 pr-8 py-2 outline-none transition-all placeholder:text-zinc-400 shadow-2xs"
             />
+            {filterQuery && (
+              <button
+                onClick={() => setFilterQuery("")}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded-full text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 cursor-pointer"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
+        </div>
+
+        {/* Category Tabs (All / Direct / Groups) */}
+        <div className="px-3 pb-2 border-b border-slate-200/60 dark:border-zinc-800/50 flex items-center gap-1.5">
+          <button
+            onClick={() => setFilterTab("all")}
+            className={`px-3 py-1 rounded-full text-[11px] font-semibold transition-all cursor-pointer ${
+              filterTab === "all"
+                ? "bg-blue-600 text-white shadow-xs"
+                : "bg-slate-100 dark:bg-zinc-800/60 text-zinc-600 dark:text-zinc-400 hover:bg-slate-200/80 dark:hover:bg-zinc-800"
+            }`}
+          >
+            All <span className="opacity-80">({conversations.length})</span>
+          </button>
+          <button
+            onClick={() => setFilterTab("direct")}
+            className={`px-3 py-1 rounded-full text-[11px] font-semibold transition-all cursor-pointer ${
+              filterTab === "direct"
+                ? "bg-blue-600 text-white shadow-xs"
+                : "bg-slate-100 dark:bg-zinc-800/60 text-zinc-600 dark:text-zinc-400 hover:bg-slate-200/80 dark:hover:bg-zinc-800"
+            }`}
+          >
+            Direct <span className="opacity-80">({directCount})</span>
+          </button>
+          <button
+            onClick={() => setFilterTab("groups")}
+            className={`px-3 py-1 rounded-full text-[11px] font-semibold transition-all cursor-pointer ${
+              filterTab === "groups"
+                ? "bg-blue-600 text-white shadow-xs"
+                : "bg-slate-100 dark:bg-zinc-800/60 text-zinc-600 dark:text-zinc-400 hover:bg-slate-200/80 dark:hover:bg-zinc-800"
+            }`}
+          >
+            Groups <span className="opacity-80">({groupCount})</span>
+          </button>
         </div>
 
         {/* Conversation List */}
@@ -183,6 +244,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <p className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">
                 {filterQuery
                   ? "No matching chats found"
+                  : filterTab === "groups"
+                  ? "No groups yet"
+                  : filterTab === "direct"
+                  ? "No direct chats yet"
                   : "No conversations yet"}
               </p>
               <p className="text-[11px] text-zinc-400 mt-1 max-w-[200px]">

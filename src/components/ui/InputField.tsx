@@ -54,16 +54,16 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
             id={inputId}
             disabled={disabled}
             className={cn(
-              "w-full rounded-xl bg-zinc-50 dark:bg-zinc-900/80 border text-zinc-900 dark:text-zinc-100 px-3.5 py-2.5 text-sm transition-all duration-200",
+              "w-full rounded-xl bg-slate-50 dark:bg-zinc-900/80 border text-zinc-900 dark:text-zinc-100 px-3.5 py-2.5 text-sm transition-all duration-150 shadow-2xs",
               "placeholder:text-zinc-400 dark:placeholder:text-zinc-500",
-              "focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500",
+              "focus:outline-none focus:bg-white dark:focus:bg-zinc-850 focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500",
               leftIcon ? "pl-10" : "pl-3.5",
               rightIcon ? "pr-10" : "pr-3.5",
               error
                 ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20 bg-rose-50/30 dark:bg-rose-950/20"
-                : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700",
+                : "border-slate-200 dark:border-zinc-800 hover:border-slate-300 dark:hover:border-zinc-700",
               disabled &&
-                "opacity-60 cursor-not-allowed bg-zinc-100 dark:bg-zinc-900",
+                "opacity-60 cursor-not-allowed bg-slate-100 dark:bg-zinc-900",
               className,
             )}
             {...props}

@@ -29,15 +29,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const variantStyles = {
       primary:
-        "bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-sm shadow-blue-500/20",
+        "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.98] text-white shadow-md shadow-blue-500/25 font-semibold",
       secondary:
-        "bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-900 dark:text-zinc-100",
+        "bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200/80 dark:hover:bg-zinc-700 text-zinc-900 dark:text-zinc-100 border border-slate-200/80 dark:border-zinc-700/60 shadow-2xs active:scale-[0.98]",
       outline:
-        "border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800/60 text-zinc-800 dark:text-zinc-200",
+        "border border-slate-300 dark:border-zinc-700 hover:bg-slate-100 dark:hover:bg-zinc-800/80 text-zinc-800 dark:text-zinc-200 active:scale-[0.98]",
       danger:
-        "bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white shadow-sm shadow-rose-500/20",
+        "bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 active:scale-[0.98] text-white shadow-md shadow-rose-500/25 font-semibold",
       ghost:
-        "hover:bg-zinc-100 dark:hover:bg-zinc-800/70 text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100",
+        "hover:bg-slate-100 dark:hover:bg-zinc-800/70 text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 active:scale-[0.98]",
     };
 
     const sizeStyles = {
