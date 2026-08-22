@@ -9,12 +9,12 @@ Welcome to my ChatApp project! This is a real-time messaging application built t
 - **TypeScript:** Honestly, after learning TypeScript, I hadn't used it in a real production project yet, so I wanted to give it a try here. For a Chat App, data can get complex (messages, users, socket events). Using TS made sure I didn't mess up the data structures and helped me get comfortable using it in a real-time scenario.
 - **Tailwind CSS:** It is the fastest way to build beautiful, responsive UI without jumping between CSS files. 
 - **Socket.io-client:** For real-time messaging, WebSockets are a must. Socket.io is reliable, easy to use, and handles reconnects automatically.
-- **Axios & c Query:** I used Axios for API calls and Tanstack Query for fetching and caching data smoothly. 
+- **Axios & Tanstack Query:** I used Axios for API calls and Tanstack Query for fetching and caching data smoothly. 
 
 
 
 
-##  Part 2: Design Choices
+##  Part 2: Landing Page Design Choices
 
 My main goal was for users to get a **premium feel** as soon as they visit the landing page. 
 
@@ -46,12 +46,10 @@ I used AI tools(Antigravity, ChatGPT) as a smart assistant to speed up developme
 
 ##  What I'd Improve with More Time
 
-If I had more time, I would:
-1. **End-to-End Encryption:** Add real security for user messages.
-2. **File Attachments:** Allow users to send images and documents, not just text.
-3. **Typing Indicators & Read Receipts:** To make the real-time experience feel even more alive.
-4. **State Management:** Maybe introduce Zustand if the app grows much larger to manage complex global states better.
-5. **Testing:** Write automated tests using Jest and Cypress to ensure nothing breaks during updates.
+If I had more time, I would focus on:
+- **Typing Indicators & Read Receipts:** Enhancing the chat UI to make conversations feel even more real-time.
+- **Comprehensive Testing:** Adding more automated tests to ensure the core chat features remain fully stable.
+- **Performance Optimization:** Tuning the application to handle very large conversations and higher traffic smoothly.
+- **Micro-Interactions:** Adding a few more polished animations and interactive details to elevate the overall user experience.
 
----
-*Built with for the assessment.*
+
