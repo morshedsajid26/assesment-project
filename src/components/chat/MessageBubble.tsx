@@ -10,14 +10,49 @@ export interface MessageBubbleProps {
   message: Message;
   isMe: boolean;
   showSenderHeader?: boolean;
+  isGroup?: boolean;
   senderUser?: User;
   isConsecutive?: boolean;
 }
+
+// Helper to auto-linkify URLs within message text
+const renderMessageText = (text: string, isMe: boolean) => {
+  if (!text) return null;
+  const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/gi;
+  const parts = text.split(urlRegex);
+
+  return parts.map((part, index) => {
+    if (part.match(urlRegex)) {
+      const href =
+        part.startsWith("http://") || part.startsWith("https://")
+          ? part
+          : `https://${part}`;
+      return (
+        <a
+          key={index}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className={`underline underline-offset-2 break-all transition-colors cursor-pointer ${
+            isMe
+              ? "text-white font-medium hover:text-blue-100 hover:decoration-white"
+              : "text-blue-600 dark:text-blue-400 font-medium hover:text-blue-700 dark:hover:text-blue-300"
+          }`}
+        >
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
+};
 
 export const MessageBubble: React.FC<MessageBubbleProps> = ({
   message,
   isMe,
   showSenderHeader = false,
+  isGroup = false,
   senderUser,
   isConsecutive = false,
 }) => {
@@ -27,24 +62,28 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   return (
     <div
-      className={`w-full flex items-end gap-1.5 sm:gap-2 ${
+      className={`w-full flex items-start gap-1.5 sm:gap-2 ${
         isConsecutive ? "mt-2" : "mt-2"
       } ${
         isMe ? "justify-end" : "justify-start"
       } animate-in fade-in slide-in-from-bottom-1 duration-150`}
     >
-      {/* Received message avatar (only in group chats when showing sender header) */}
-      {!isMe && showSenderHeader && (
-        <div className="w-6 sm:w-7 shrink-0 mb-1">
-          <Avatar
-            name={senderName}
-            seedId={
-              typeof message.sender === "string"
-                ? message.sender
-                : message.sender?._id
-            }
-            size="xs"
-          />
+      {/* Group Chat Avatar Column (aligned to top) */}
+      {!isMe && isGroup && (
+        <div className="w-6 sm:w-7 shrink-0 mt-0.5">
+          {showSenderHeader ? (
+            <Avatar
+              name={senderName}
+              seedId={
+                typeof message.sender === "string"
+                  ? message.sender
+                  : message.sender?._id
+              }
+              size="xs"
+            />
+          ) : (
+            <div className="w-6 sm:w-7" />
+          )}
         </div>
       )}
 
@@ -63,8 +102,10 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
           </p>
         )}
 
-        {/* Message Content */}
-        <p className="whitespace-pre-wrap break-words">{message.text}</p>
+        {/* Message Content with Auto-Clickable Links */}
+        <p className="whitespace-pre-wrap break-words">
+          {renderMessageText(message.text, isMe)}
+        </p>
 
         {/* Meta (Timestamp + Status) */}
         <div

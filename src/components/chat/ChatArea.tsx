@@ -38,8 +38,16 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
   onLeaveGroup,
   incomingSocketMessage,
 }) => {
-  const { messages, loading, fetchMessages, sendMessage, addIncomingMessage } =
-    useMessages(conversation._id, currentUser);
+  const {
+    messages,
+    loading,
+    hasMore,
+    loadingOlder,
+    loadOlderMessages,
+    fetchMessages,
+    sendMessage,
+    addIncomingMessage,
+  } = useMessages(conversation._id, currentUser);
 
   // Load message history on conversation change
   useEffect(() => {
@@ -95,6 +103,9 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
         loading={loading}
         currentUser={currentUser}
         conversation={conversation}
+        hasMore={hasMore}
+        loadingOlder={loadingOlder}
+        onLoadOlder={loadOlderMessages}
       />
 
       {/* Input Bar */}

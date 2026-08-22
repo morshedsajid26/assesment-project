@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useAxios } from "./useAxios";
 import { Message, MessagesResponse, User } from "@/src/types";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -9,8 +9,10 @@ import { toast } from "sonner";
 export const useMessages = (conversationId: string | null, currentUser: User | null) => {
   const axios = useAxios();
   const queryClient = useQueryClient();
+  const [hasMore, setHasMore] = useState(false);
+  const [loadingOlder, setLoadingOlder] = useState(false);
 
-  // TanStack Query to fetch message history
+  // TanStack Query to fetch message history with larger initial limit
   const {
     data: messages = [],
     isLoading: loading,
@@ -20,8 +22,13 @@ export const useMessages = (conversationId: string | null, currentUser: User | n
     queryKey: ["messages", conversationId],
     queryFn: async () => {
       if (!conversationId) return [];
-      const res = await axios.get<MessagesResponse>(`/conversations/${conversationId}/messages`);
+      const res = await axios.get<MessagesResponse>(`/conversations/${conversationId}/messages`, {
+        params: { limit: 100 },
+      });
       const list = res.data?.messages || [];
+      if (typeof res.data?.hasMore === "boolean") {
+        setHasMore(res.data.hasMore);
+      }
       return [...list].sort(
         (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
       );
@@ -30,6 +37,59 @@ export const useMessages = (conversationId: string | null, currentUser: User | n
     refetchInterval: 2500, // 2.5s live polling fallback to guarantee real-time sync
     refetchOnWindowFocus: true,
   });
+
+  // Load older messages (pagination)
+  const loadOlderMessages = useCallback(async () => {
+    if (!conversationId || loadingOlder || !hasMore || messages.length === 0) return;
+
+    try {
+      setLoadingOlder(true);
+      const oldestMsg = messages[0];
+      const oldestId = oldestMsg?._id;
+      const oldestDate = oldestMsg?.createdAt;
+
+      const res = await axios.get<MessagesResponse>(`/conversations/${conversationId}/messages`, {
+        params: {
+          limit: 50,
+          before: oldestId,
+          beforeId: oldestId,
+          beforeDate: oldestDate,
+          offset: messages.length,
+        },
+      });
+
+      const olderList = res.data?.messages || [];
+      if (typeof res.data?.hasMore === "boolean") {
+        setHasMore(res.data.hasMore);
+      } else {
+        setHasMore(olderList.length >= 20);
+      }
+
+      if (olderList.length > 0) {
+        queryClient.setQueryData<Message[]>(["messages", conversationId], (prev = []) => {
+          const combined = [...olderList, ...prev];
+          // Remove duplicates
+          const seen = new Set<string>();
+          const unique: Message[] = [];
+          combined.forEach((m) => {
+            if (!seen.has(m._id)) {
+              seen.add(m._id);
+              unique.push(m);
+            }
+          });
+          return unique.sort(
+            (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+        });
+      } else {
+        setHasMore(false);
+      }
+    } catch (err) {
+      console.error("Failed to load older messages", err);
+    } finally {
+      setLoadingOlder(false);
+    }
+  }, [conversationId, loadingOlder, hasMore, messages, axios, queryClient]);
 
   // Mutation to send a message with optimistic UI updates
   const sendMutation = useMutation({
@@ -113,6 +173,9 @@ export const useMessages = (conversationId: string | null, currentUser: User | n
   return {
     messages,
     loading,
+    hasMore,
+    loadingOlder,
+    loadOlderMessages,
     sending: sendMutation.isPending,
     error: queryError ? (queryError as any).message : null,
     fetchMessages,

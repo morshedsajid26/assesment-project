@@ -6,13 +6,16 @@ import { Skeleton } from "@/src/components/ui/Skeleton";
 import { useScrollToBottom } from "@/src/hooks/useScrollToBottom";
 import { formatDateDivider } from "@/src/lib/utils";
 import { Conversation, Message, User } from "@/src/types";
-import { ArrowDown, MessageSquare } from "lucide-react";
+import { ArrowDown, MessageSquare, Loader2 } from "lucide-react";
 
 export interface MessageListProps {
   messages: Message[];
   loading: boolean;
   currentUser: User | null;
   conversation: Conversation;
+  hasMore?: boolean;
+  loadingOlder?: boolean;
+  onLoadOlder?: () => void;
 }
 
 export const MessageList: React.FC<MessageListProps> = ({
@@ -20,6 +23,9 @@ export const MessageList: React.FC<MessageListProps> = ({
   loading,
   currentUser,
   conversation,
+  hasMore = false,
+  loadingOlder = false,
+  onLoadOlder,
 }) => {
   const isGroup = conversation.type === "group";
 
@@ -111,6 +117,27 @@ export const MessageList: React.FC<MessageListProps> = ({
         className="flex-1 overflow-y-auto"
       >
         <div className="min-h-full flex flex-col justify-end py-4 px-4 sm:px-6 md:px-8">
+          {/* Load Older Messages Button */}
+          {hasMore && (
+            <div className="flex justify-center mb-3">
+              <button
+                type="button"
+                onClick={onLoadOlder}
+                disabled={loadingOlder}
+                className="px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-200/80 hover:bg-slate-300/80 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-750 dark:text-zinc-300 border border-slate-300/60 dark:border-zinc-700 transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer active:scale-95 disabled:opacity-50"
+              >
+                {loadingOlder ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-500" />
+                    <span>Loading previous messages...</span>
+                  </>
+                ) : (
+                  <span>Load older messages</span>
+                )}
+              </button>
+            </div>
+          )}
+
           {groupedMessages.map((group, groupIndex) => (
             <div key={group.dateKey || groupIndex}>
               {/* Date divider pill */}
@@ -144,6 +171,7 @@ export const MessageList: React.FC<MessageListProps> = ({
                     isMe={isMe}
                     isConsecutive={isConsecutive}
                     showSenderHeader={isGroup && !isMe && !isConsecutive}
+                    isGroup={isGroup}
                     senderUser={senderUser}
                   />
                 );
