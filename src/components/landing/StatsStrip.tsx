@@ -37,7 +37,7 @@ export const StatsStrip: React.FC = () => {
   ];
 
   return (
-    <section className="py-12 border-y border-slate-200/80 dark:border-zinc-800/80 bg-white/40 dark:bg-zinc-950/50 backdrop-blur-sm relative z-10">
+    <section className="py-12 bg-white/70 dark:bg-zinc-950/50 backdrop-blur-sm relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {stats.map((stat, index) => (

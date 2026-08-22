@@ -37,7 +37,7 @@ export const FaqSection: React.FC = () => {
   return (
     <section
       id="faq"
-      className="py-24 bg-white/40 dark:bg-zinc-950/50 border-t border-slate-200/80 dark:border-zinc-800/80 relative z-10 scroll-mt-20"
+      className="py-24 bg-white dark:bg-zinc-950/50 border-t border-slate-200/80 dark:border-zinc-800/80 relative z-10 scroll-mt-20"
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}

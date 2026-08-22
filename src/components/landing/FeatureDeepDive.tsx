@@ -69,7 +69,7 @@ export const FeatureDeepDive: React.FC = () => {
   const current = features[activeFeature];
 
   return (
-    <section id="demo" className="py-20 sm:py-24 bg-white/40 dark:bg-zinc-950/60 border-t border-slate-200/80 dark:border-zinc-800/80 relative z-10 scroll-mt-20">
+    <section id="demo" className="py-20 sm:py-24 bg-white dark:bg-zinc-950/60 border-t border-slate-200/80 dark:border-zinc-800/80 relative z-10 scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
           <span className="text-xs font-bold text-blue-600 dark:text-blue-400 tracking-wider uppercase">
