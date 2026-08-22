@@ -38,7 +38,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"phone\": \"01712345678\",\n  \"name\": \"Your Name\"\n}",
+              "raw": "{\n  \"phone\": \"+8801756899699\",\n  \"name\": \"Sajid\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
