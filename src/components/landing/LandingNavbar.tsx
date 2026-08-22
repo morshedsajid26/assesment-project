@@ -119,7 +119,7 @@ export const LandingNavbar: React.FC = () => {
               href="/chat"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-700 hover:via-indigo-700 hover:to-violet-700 text-white shadow-md shadow-blue-500/25 active:scale-95 transition-all group whitespace-nowrap"
             >
-              <span>Open Dashboard</span>
+              <span>Open ChatApp</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           ) : (
@@ -185,7 +185,7 @@ export const LandingNavbar: React.FC = () => {
                   onClick={() => setMobileMenuOpen(false)}
                   className="w-full text-center py-3 rounded-xl font-bold bg-blue-600 text-white shadow-md active:scale-[0.98] transition-transform"
                 >
-                  Open Dashboard
+                  Open ChatApp
                 </Link>
               ) : (
                 <Link
