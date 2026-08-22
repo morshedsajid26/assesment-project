@@ -22,6 +22,7 @@ import {
 import { Conversation, User } from "@/src/types";
 import { ThreeUsersIcon } from "../ui/ThreeUsersIcon";
 import { ThemeToggle } from "@/src/components/ui/ThemeToggle";
+import { BrandLogo } from "@/src/components/ui/BrandLogo";
 
 export interface SidebarProps {
   conversations: Conversation[];
@@ -126,24 +127,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <aside
         className={`flex flex-col h-full bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-r border-slate-200/90 dark:border-zinc-800 ${className}`}
       >
-        {/* User Profile Header with Real-Time Status */}
+        {/* Header with Brand Logo and User Options */}
         <div className="p-4 border-b border-slate-200/70 dark:border-zinc-800/80 flex items-center justify-between">
-          <div className="flex items-center gap-3 min-w-0">
-            <Avatar
-              name={currentUser?.name}
-              seedId={currentUser?._id}
-              size="md"
-              showOnlineDot
-              isOnline={isSocketConnected}
-            />
-            <div className="min-w-0">
-              <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-50 truncate">
-                {currentUser?.name || "My Account"}
-              </h3>
-              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
-                {currentUser?.phone || ""}
-              </p>
-            </div>
+          <div className="flex items-center">
+            <BrandLogo size="md" href="/" />
           </div>
 
           <div className="flex items-center gap-1">
@@ -156,6 +143,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 >
                   <MoreVertical className="w-4 h-4" />
                 </button>
+              }
+              header={
+                <div className="flex items-center gap-3">
+                  <Avatar
+                    name={currentUser?.name}
+                    seedId={currentUser?._id}
+                    size="md"
+                    showOnlineDot
+                    isOnline={isSocketConnected}
+                  />
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-50 truncate">
+                      {currentUser?.name || "My Account"}
+                    </h3>
+                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+                      {currentUser?.phone || ""}
+                    </p>
+                  </div>
+                </div>
               }
               items={userMenuItems}
             />

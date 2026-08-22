@@ -66,12 +66,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
 
       if (String(msgConvId) === String(conversation._id)) {
         addIncomingMessage(incomingSocketMessage);
-        
-        // If we receive a message from someone, they stop typing immediately
-        const senderId = typeof incomingSocketMessage.sender === "object" 
-          ? incomingSocketMessage.sender._id 
-          : incomingSocketMessage.sender;
-        setTypingUsers(prev => prev.filter(u => u._id !== senderId));
       }
     }
   }, [incomingSocketMessage, conversation._id, addIncomingMessage]);

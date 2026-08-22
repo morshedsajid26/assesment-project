@@ -7,12 +7,13 @@ import { ArrowRight, Menu, X, Sparkles, Zap } from "lucide-react";
 import { ThemeToggle } from "@/src/components/ui/ThemeToggle";
 import { useAuthContext } from "@/src/context/AuthContext";
 import { BrandLogo } from "@/src/components/ui/BrandLogo";
+import { Avatar } from "@/src/components/ui/Avatar";
 
 export const LandingNavbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("hero");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, user } = useAuthContext();
 
   const navLinks = [
     { label: "Overview", href: "#hero" },
@@ -114,13 +115,18 @@ export const LandingNavbar: React.FC = () => {
         <div className="hidden lg:flex items-center gap-3.5 shrink-0">
           <ThemeToggle className="bg-slate-100/80 dark:bg-zinc-800/80 backdrop-blur border border-slate-200/80 dark:border-zinc-700/60 p-2.5" />
 
-          {isAuthenticated ? (
+          {isAuthenticated && user ? (
             <Link
               href="/chat"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-700 hover:via-indigo-700 hover:to-violet-700 text-white shadow-md shadow-blue-500/25 active:scale-95 transition-all group whitespace-nowrap"
+              className="inline-flex items-center gap-2.5 px-2.5 py-1.5 rounded-full bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700/60 hover:bg-slate-200 dark:hover:bg-zinc-700 hover:border-slate-300 dark:hover:border-zinc-600 active:scale-95 transition-all group shadow-xs"
             >
-              <span>Open ChatApp</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              <Avatar name={user.name} seedId={user._id} size="sm" />
+              <div className="flex items-center gap-1.5 pr-2">
+                <span className="text-sm font-bold text-zinc-700 dark:text-zinc-200">
+                  {user.name.split(" ")[0]}
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-x-0.5 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-all" />
+              </div>
             </Link>
           ) : (
             <Link
@@ -179,13 +185,24 @@ export const LandingNavbar: React.FC = () => {
             </nav>
 
             <div className="pt-3 border-t border-slate-200/80 dark:border-zinc-800 flex flex-col gap-2.5">
-              {isAuthenticated ? (
+              {isAuthenticated && user ? (
                 <Link
                   href="/chat"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full text-center py-3 rounded-xl font-bold bg-blue-600 text-white shadow-md active:scale-[0.98] transition-transform"
+                  className="w-full flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 active:scale-[0.98] transition-transform"
                 >
-                  Open ChatApp
+                  <div className="flex items-center gap-3">
+                    <Avatar name={user.name} seedId={user._id} size="md" />
+                    <div className="flex flex-col text-left">
+                      <span className="text-sm font-bold text-zinc-800 dark:text-zinc-100">
+                        {user.name}
+                      </span>
+                      <span className="text-xs text-zinc-500 font-medium">Go to chats</span>
+                    </div>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
                 </Link>
               ) : (
                 <Link
