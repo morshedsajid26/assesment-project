@@ -4,7 +4,7 @@ import React from "react";
 import { Avatar } from "@/src/components/ui/Avatar";
 import { formatTime } from "@/src/lib/utils";
 import { Message, User } from "@/src/types";
-import { Check, Clock, AlertCircle } from "lucide-react";
+import { Check, Clock, AlertCircle, Reply as ReplyIcon } from "lucide-react";
 
 export interface MessageBubbleProps {
   message: Message;
@@ -13,6 +13,7 @@ export interface MessageBubbleProps {
   isGroup?: boolean;
   senderUser?: User;
   isConsecutive?: boolean;
+  onReply?: (msg: Message) => void;
 }
 
 // Helper to auto-linkify URLs within message text
@@ -55,19 +56,45 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
   isGroup = false,
   senderUser,
   isConsecutive = false,
+  onReply,
 }) => {
   const senderName =
     senderUser?.name ||
     (typeof message.sender === "object" ? message.sender.name : "User");
 
+  let displayText = message.text || "";
+  let replyData: { id: string; name: string; text: string } | null = null;
+
+  const replyRegex = /^::REPLY::(\{.*?\})::REPLY::\n?/;
+  const match = displayText.match(replyRegex);
+  if (match) {
+    try {
+      replyData = JSON.parse(match[1]);
+      displayText = displayText.replace(replyRegex, "");
+    } catch (e) {
+      console.error("Failed to parse reply metadata", e);
+    }
+  }
+
   return (
     <div
-      className={`w-full flex items-start gap-1.5 sm:gap-2 ${
+      className={`w-full flex items-start gap-1.5 sm:gap-2 group ${
         isConsecutive ? "mt-2" : "mt-2"
       } ${
         isMe ? "justify-end" : "justify-start"
       } animate-in fade-in slide-in-from-bottom-1 duration-150`}
     >
+      {/* Reply Button (Left if Me) */}
+      {isMe && onReply && (
+        <button
+          onClick={() => onReply(message)}
+          className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 mt-2 rounded-full text-zinc-400 hover:text-zinc-600 hover:bg-slate-100 dark:hover:text-zinc-200 dark:hover:bg-zinc-800 self-center"
+          title="Reply to message"
+        >
+          <ReplyIcon className="w-4 h-4" />
+        </button>
+      )}
+
       {/* Group Chat Avatar Column (aligned to top) */}
       {!isMe && isGroup && (
         <div className="w-6 sm:w-7 shrink-0 mt-0.5">
@@ -95,6 +122,22 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
             : "bg-white/95 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border border-slate-200/90 dark:border-zinc-700/60 rounded-bl-xs shadow-sm shadow-slate-200/60"
         }`}
       >
+        {/* Reply Preview Block */}
+        {replyData && (
+          <div
+            className={`mb-2 pl-2.5 py-1.5 pr-3 rounded-lg border-l-4 text-xs select-none opacity-90 ${
+              isMe
+                ? "bg-blue-700/30 border-blue-200 text-blue-50"
+                : "bg-slate-100 dark:bg-zinc-900 border-blue-500 text-zinc-600 dark:text-zinc-300"
+            }`}
+          >
+            <p className={`font-bold mb-0.5 truncate ${isMe ? "text-blue-100" : "text-blue-600 dark:text-blue-400"}`}>
+              {replyData.name}
+            </p>
+            <p className="truncate opacity-80">{replyData.text.replace(/::REPLY::.*?::REPLY::\n?/g, "")}</p>
+          </div>
+        )}
+
         {/* Sender Name in Group Chat */}
         {!isMe && showSenderHeader && (
           <p className="text-[11px] font-bold text-blue-600 dark:text-blue-400 mb-1">
@@ -104,7 +147,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
 
         {/* Message Content with Auto-Clickable Links */}
         <p className="whitespace-pre-wrap break-words">
-          {renderMessageText(message.text, isMe)}
+          {renderMessageText(displayText, isMe)}
         </p>
 
         {/* Meta (Timestamp + Status) */}
@@ -130,6 +173,17 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
           )}
         </div>
       </div>
+
+      {/* Reply Button (Right if Not Me) */}
+      {!isMe && onReply && (
+        <button
+          onClick={() => onReply(message)}
+          className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 mt-2 rounded-full text-zinc-400 hover:text-zinc-600 hover:bg-slate-100 dark:hover:text-zinc-200 dark:hover:bg-zinc-800 self-center"
+          title="Reply to message"
+        >
+          <ReplyIcon className="w-4 h-4" />
+        </button>
+      )}
     </div>
   );
 };

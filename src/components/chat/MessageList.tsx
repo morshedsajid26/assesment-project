@@ -16,6 +16,7 @@ export interface MessageListProps {
   hasMore?: boolean;
   loadingOlder?: boolean;
   onLoadOlder?: () => void;
+  onReply?: (msg: Message) => void;
 }
 
 export const MessageList: React.FC<MessageListProps> = ({
@@ -26,6 +27,7 @@ export const MessageList: React.FC<MessageListProps> = ({
   hasMore = false,
   loadingOlder = false,
   onLoadOlder,
+  onReply,
 }) => {
   const isGroup = conversation.type === "group";
 
@@ -173,11 +175,13 @@ export const MessageList: React.FC<MessageListProps> = ({
                     showSenderHeader={isGroup && !isMe && !isConsecutive}
                     isGroup={isGroup}
                     senderUser={senderUser}
+                    onReply={onReply}
                   />
                 );
               })}
             </div>
           ))}
+
           {/* Bottom anchor for smooth scroll references */}
           <div ref={bottomRef} className="h-px w-full" />
         </div>

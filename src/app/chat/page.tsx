@@ -16,6 +16,7 @@ export default function ChatDashboardPage() {
     conversations,
     activeConversationId,
     activeConversation,
+    unreadCounts,
     loading: convsLoading,
     setActiveConversationId,
     fetchConversations,
@@ -47,7 +48,7 @@ export default function ChatDashboardPage() {
         text: message.text,
         sender: message.sender,
         createdAt: message.createdAt,
-      });
+      }, true); // pass true for isIncoming
     },
     [updateConversationLastMessage],
   );
@@ -93,6 +94,7 @@ export default function ChatDashboardPage() {
         <Sidebar
           conversations={conversations}
           activeConversationId={activeConversationId}
+          unreadCounts={unreadCounts}
           loading={convsLoading}
           currentUser={user}
           onSelectConversation={setActiveConversationId}

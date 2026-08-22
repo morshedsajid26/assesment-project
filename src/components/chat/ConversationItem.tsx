@@ -9,6 +9,7 @@ import { ThreeUsersIcon } from "@/src/components/ui/ThreeUsersIcon";
 export interface ConversationItemProps {
   conversation: Conversation;
   isActive: boolean;
+  unreadCount?: number;
   currentUser: User | null;
   onClick: () => void;
 }
@@ -16,6 +17,7 @@ export interface ConversationItemProps {
 export const ConversationItem: React.FC<ConversationItemProps> = ({
   conversation,
   isActive,
+  unreadCount = 0,
   currentUser,
   onClick,
 }) => {
@@ -44,7 +46,11 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
   }
 
   const lastMessage = conversation.lastMessage;
-  const lastMessageText = lastMessage?.text || "No messages yet";
+  let lastMessageText = lastMessage?.text || "No messages yet";
+  
+  // Strip the reply metadata if present
+  lastMessageText = lastMessageText.replace(/^::REPLY::.*?::REPLY::\n?/, "");
+
   const timestamp = conversation.updatedAt || conversation.createdAt;
 
   return (
@@ -94,7 +100,7 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
           {timestamp && (
             <span
               className={`text-[11px] shrink-0 font-medium ${
-                isActive ? "text-blue-100" : "text-zinc-400 dark:text-zinc-500"
+                isActive ? "text-blue-100" : unreadCount > 0 ? "text-blue-600 dark:text-blue-400 font-bold" : "text-zinc-400 dark:text-zinc-500"
               }`}
             >
               {formatConversationTime(timestamp)}
@@ -102,13 +108,21 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
           )}
         </div>
 
-        <p
-          className={`text-xs truncate ${
-            isActive ? "text-blue-100" : "text-zinc-500 dark:text-zinc-400"
-          }`}
-        >
-          {lastMessageText}
-        </p>
+        <div className="flex items-center justify-between gap-2">
+          <p
+            className={`text-xs truncate ${
+              isActive ? "text-blue-100" : unreadCount > 0 ? "text-zinc-900 dark:text-zinc-100 font-semibold" : "text-zinc-500 dark:text-zinc-400"
+            }`}
+          >
+            {lastMessageText}
+          </p>
+          
+          {unreadCount > 0 && !isActive && (
+            <span className="flex items-center justify-center min-w-[20px] h-[20px] px-1.5 rounded-full bg-blue-600 text-white text-[10px] font-bold shrink-0 shadow-sm animate-in zoom-in duration-200">
+              {unreadCount > 99 ? "99+" : unreadCount}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -1,20 +1,25 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Send, Loader2, Smile } from "lucide-react";
+import { Send, Loader2, Smile, X, Reply } from "lucide-react";
 import { Button } from "@/src/components/ui/Button";
 import { EmojiPicker } from "./EmojiPicker";
+import { Message } from "@/src/types";
 
 export interface MessageInputProps {
   onSendMessage: (text: string) => Promise<any>;
   disabled?: boolean;
   placeholder?: string;
+  replyingTo?: Message | null;
+  onCancelReply?: () => void;
 }
 
 export const MessageInput: React.FC<MessageInputProps> = ({
   onSendMessage,
   disabled = false,
   placeholder = "Type a message...",
+  replyingTo,
+  onCancelReply,
 }) => {
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
@@ -41,7 +46,19 @@ export const MessageInput: React.FC<MessageInputProps> = ({
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
       }
-      await onSendMessage(trimmed);
+
+      let payload = trimmed;
+      if (replyingTo) {
+        const replyMeta = {
+          id: replyingTo._id,
+          name: typeof replyingTo.sender === "object" ? replyingTo.sender.name : "User",
+          text: replyingTo.text,
+        };
+        payload = `::REPLY::${JSON.stringify(replyMeta)}::REPLY::\n${trimmed}`;
+      }
+
+      await onSendMessage(payload);
+      if (onCancelReply) onCancelReply();
     } catch (err) {
       console.error("Failed to send message", err);
       // Restore unsent text on failure
@@ -83,6 +100,30 @@ export const MessageInput: React.FC<MessageInputProps> = ({
 
   return (
     <div className="py-3.5 px-4 sm:px-6 md:px-8 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-slate-200/80 dark:border-zinc-800 relative z-20">
+      {/* Reply Preview */}
+      {replyingTo && (
+        <div className="absolute bottom-full left-0 right-0 px-4 sm:px-6 md:px-8 pb-3 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-slate-200/80 dark:border-zinc-800 flex items-center justify-between shadow-[0_-4px_15px_-3px_rgba(0,0,0,0.05)] dark:shadow-[0_-4px_15px_-3px_rgba(0,0,0,0.2)]">
+          <div className="flex items-center gap-3 overflow-hidden bg-slate-100/80 dark:bg-zinc-800/80 rounded-xl p-3 w-full border border-slate-200 dark:border-zinc-700/60 mt-[-1px]">
+            <Reply className="w-4 h-4 text-blue-500 shrink-0" />
+            <div className="flex flex-col truncate">
+              <span className="text-[11px] font-bold text-blue-600 dark:text-blue-400">
+                Replying to {typeof replyingTo.sender === "object" ? replyingTo.sender.name : "User"}
+              </span>
+              <span className="text-xs text-zinc-500 dark:text-zinc-400 truncate max-w-sm">
+                {replyingTo.text.replace(/::REPLY::.*?::REPLY::\n?/g, "")}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={onCancelReply}
+              className="ml-auto p-1.5 rounded-full text-zinc-400 hover:bg-slate-200 dark:hover:bg-zinc-700 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors shrink-0"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
       <form
         onSubmit={handleSubmit}
         className="flex items-end gap-2.5 w-full relative"

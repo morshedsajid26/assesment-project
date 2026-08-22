@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { useAxios } from "./useAxios";
 import { Conversation, LastMessage } from "@/src/types";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -9,7 +9,50 @@ import { toast } from "sonner";
 export const useConversations = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
+  const [activeConversationIdState, setActiveConversationIdState] = useState<string | null>(null);
+  const [readTimestamps, setReadTimestamps] = useState<Record<string, string>>({});
+  const [unreadCounts, setUnreadCounts] = useState<Record<string, number>>({});
+  const [hasInitializedTimestamps, setHasInitializedTimestamps] = useState(false);
+
+  // Sync state with localStorage on mount
+  useEffect(() => {
+    try {
+      const savedConv = localStorage.getItem("activeConversationId");
+      if (savedConv) setActiveConversationIdState(savedConv);
+
+      const savedTimestamps = localStorage.getItem("readTimestamps");
+      if (savedTimestamps) {
+        setReadTimestamps(JSON.parse(savedTimestamps));
+      }
+
+      const savedCounts = localStorage.getItem("unreadCounts");
+      if (savedCounts) {
+        setUnreadCounts(JSON.parse(savedCounts));
+      }
+    } catch (e) {
+      console.error("Failed to load local storage data", e);
+    }
+  }, []);
+
+  const setActiveConversationId = useCallback((id: string | null) => {
+    setActiveConversationIdState(id);
+    if (id) {
+      localStorage.setItem("activeConversationId", id);
+      setReadTimestamps(prev => {
+        const next = { ...prev, [id]: new Date().toISOString() };
+        localStorage.setItem("readTimestamps", JSON.stringify(next));
+        return next;
+      });
+      setUnreadCounts(prev => {
+        const next = { ...prev };
+        delete next[id];
+        localStorage.setItem("unreadCounts", JSON.stringify(next));
+        return next;
+      });
+    } else {
+      localStorage.removeItem("activeConversationId");
+    }
+  }, []);
 
   // TanStack Query to fetch conversations
   const {
@@ -24,6 +67,49 @@ export const useConversations = () => {
       return res.data?.data || (Array.isArray(res.data) ? res.data : []);
     },
   });
+
+  // Initialize read timestamps for new conversations
+  useEffect(() => {
+    if (conversations.length > 0 && !hasInitializedTimestamps) {
+      setHasInitializedTimestamps(true);
+      setReadTimestamps((prev) => {
+        const next = { ...prev };
+        let modified = false;
+        conversations.forEach((conv) => {
+          if (!next[conv._id]) {
+            next[conv._id] = new Date().toISOString(); // mark as read by default
+            modified = true;
+          }
+        });
+        if (modified) localStorage.setItem("readTimestamps", JSON.stringify(next));
+        return next;
+      });
+    }
+  }, [conversations, hasInitializedTimestamps]);
+
+  // Compute unread counts dynamically based on timestamps + manual socket counts
+  const computedUnreadCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    conversations.forEach(conv => {
+      const manualCount = unreadCounts[conv._id] || 0;
+      
+      if (manualCount > 0) {
+        // We have an exact count from live sockets
+        counts[conv._id] = manualCount;
+      } else if (conv.lastMessage && conv.lastMessage.createdAt) {
+        // Fallback for offline messages: compare timestamps
+        const readTime = readTimestamps[conv._id] || "1970-01-01T00:00:00.000Z";
+        if (new Date(conv.lastMessage.createdAt).getTime() > new Date(readTime).getTime()) {
+          counts[conv._id] = 1;
+        } else {
+          counts[conv._id] = 0;
+        }
+      } else {
+        counts[conv._id] = 0;
+      }
+    });
+    return counts;
+  }, [conversations, readTimestamps, unreadCounts]);
 
   // Mutation: Direct conversation
   const directMutation = useMutation({
@@ -182,7 +268,16 @@ export const useConversations = () => {
 
   // Update last message in TanStack Query cache
   const updateConversationLastMessage = useCallback(
-    (conversationId: string, lastMessage: LastMessage) => {
+    (conversationId: string, lastMessage: LastMessage, isIncoming: boolean = false) => {
+      if (isIncoming && conversationId !== activeConversationIdState) {
+        setUnreadCounts((prev) => {
+          const currentCount = prev[conversationId] || 0;
+          const next = { ...prev, [conversationId]: currentCount + 1 };
+          localStorage.setItem("unreadCounts", JSON.stringify(next));
+          return next;
+        });
+      }
+
       queryClient.setQueryData<Conversation[]>(["conversations"], (old = []) => {
         const found = old.find((c) => c._id === conversationId);
         if (!found) {
@@ -208,18 +303,19 @@ export const useConversations = () => {
         });
       });
     },
-    [queryClient]
+    [queryClient, activeConversationIdState]
   );
 
   const activeConversation = useMemo(() => {
-    if (!activeConversationId) return null;
-    return conversations.find((c) => c._id === activeConversationId) || null;
-  }, [conversations, activeConversationId]);
+    if (!activeConversationIdState) return null;
+    return conversations.find((c) => c._id === activeConversationIdState) || null;
+  }, [conversations, activeConversationIdState]);
 
   return {
     conversations,
-    activeConversationId,
+    activeConversationId: activeConversationIdState,
     activeConversation,
+    unreadCounts: computedUnreadCounts,
     loading,
     error: queryError ? (queryError as any).message : null,
     setActiveConversationId,

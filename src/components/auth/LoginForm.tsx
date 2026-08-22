@@ -77,13 +77,7 @@ export const LoginForm: React.FC = () => {
         </p>
       </div>
 
-      {/* Global Error Banner */}
-      {error && (
-        <div className="mb-6 p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/50 flex items-center gap-3 text-rose-600 dark:text-rose-400 text-xs animate-in fade-in duration-200">
-          <AlertCircle className="w-4 h-4 shrink-0" />
-          <span>{error}</span>
-        </div>
-      )}
+ 
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-4">

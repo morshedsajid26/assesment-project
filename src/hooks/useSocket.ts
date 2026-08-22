@@ -56,6 +56,15 @@ export const useSocket = ({
   const socketRef = useRef<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
 
+  // Keep latest callbacks in refs to avoid stale closures in useEffect
+  const onMessageReceivedRef = useRef(onMessageReceived);
+  const onRefreshConversationsRef = useRef(onRefreshConversations);
+
+  useEffect(() => {
+    onMessageReceivedRef.current = onMessageReceived;
+    onRefreshConversationsRef.current = onRefreshConversations;
+  }, [onMessageReceived, onRefreshConversations]);
+
   // Initialize socket connection
   useEffect(() => {
     if (!token) {
@@ -117,8 +126,8 @@ export const useSocket = ({
     const handlePayload = (payload: any) => {
       const normalized = normalizeIncomingMessage(payload);
       if (normalized && normalized.text) {
-        if (onMessageReceived) onMessageReceived(normalized);
-        if (onRefreshConversations) onRefreshConversations();
+        if (onMessageReceivedRef.current) onMessageReceivedRef.current(normalized);
+        if (onRefreshConversationsRef.current) onRefreshConversationsRef.current();
       }
     };
 
@@ -172,11 +181,11 @@ export const useSocket = ({
     if (!token || !activeConversationId) return;
 
     const interval = setInterval(() => {
-      if (onRefreshConversations) onRefreshConversations();
+      if (onRefreshConversationsRef.current) onRefreshConversationsRef.current();
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [token, activeConversationId, onRefreshConversations]);
+  }, [token, activeConversationId]);
 
   return { isConnected, socket: socketRef.current };
 };

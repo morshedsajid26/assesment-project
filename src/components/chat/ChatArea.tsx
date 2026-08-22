@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { ChatHeader } from "./ChatHeader";
 import { MessageList } from "./MessageList";
 import { MessageInput } from "./MessageInput";
@@ -49,6 +49,8 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
     addIncomingMessage,
   } = useMessages(conversation._id, currentUser);
 
+  const [replyingTo, setReplyingTo] = useState<Message | null>(null);
+
   // Load message history on conversation change
   useEffect(() => {
     fetchMessages();
@@ -64,6 +66,12 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
 
       if (String(msgConvId) === String(conversation._id)) {
         addIncomingMessage(incomingSocketMessage);
+        
+        // If we receive a message from someone, they stop typing immediately
+        const senderId = typeof incomingSocketMessage.sender === "object" 
+          ? incomingSocketMessage.sender._id 
+          : incomingSocketMessage.sender;
+        setTypingUsers(prev => prev.filter(u => u._id !== senderId));
       }
     }
   }, [incomingSocketMessage, conversation._id, addIncomingMessage]);
@@ -106,10 +114,16 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
         hasMore={hasMore}
         loadingOlder={loadingOlder}
         onLoadOlder={loadOlderMessages}
+        onReply={(msg) => setReplyingTo(msg)}
       />
 
       {/* Input Bar */}
-      <MessageInput onSendMessage={handleSendMessage} disabled={!currentUser} />
+      <MessageInput 
+        onSendMessage={handleSendMessage} 
+        disabled={!currentUser} 
+        replyingTo={replyingTo}
+        onCancelReply={() => setReplyingTo(null)}
+      />
     </div>
   );
 };

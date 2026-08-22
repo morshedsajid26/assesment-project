@@ -26,6 +26,7 @@ import { ThemeToggle } from "@/src/components/ui/ThemeToggle";
 export interface SidebarProps {
   conversations: Conversation[];
   activeConversationId: string | null;
+  unreadCounts?: Record<string, number>;
   loading: boolean;
   currentUser: User | null;
   onSelectConversation: (id: string) => void;
@@ -40,6 +41,7 @@ export interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({
   conversations,
   activeConversationId,
+  unreadCounts = {},
   loading,
   currentUser,
   onSelectConversation,
@@ -236,6 +238,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 key={conv._id}
                 conversation={conv}
                 isActive={conv._id === activeConversationId}
+                unreadCount={unreadCounts[conv._id] || 0}
                 currentUser={currentUser}
                 onClick={() => onSelectConversation(conv._id)}
               />
