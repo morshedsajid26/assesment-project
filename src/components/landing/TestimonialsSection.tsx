@@ -59,65 +59,109 @@ export const TestimonialsSection: React.FC = () => {
     },
   ];
 
-  const settings = {
+  // Mobile settings: Root slidesToShow is 1 (Never squished)
+  const mobileSettings = {
     dots: false,
+    arrows: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnHover: true,
+  };
+
+  // Desktop settings: 3 slides per view
+  const desktopSettings = {
+    dots: false,
+    arrows: false,
     infinite: true,
     speed: 600,
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 2500,
     pauseOnHover: true,
-    arrows: false,
     responsive: [
       {
         breakpoint: 1024,
-        settings: { slidesToShow: 2 },
-      },
-      {
-        breakpoint: 640,
-        settings: { slidesToShow: 1 },
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
       },
     ],
   };
 
   return (
-    <section id="testimonials" className="py-24 relative z-10 scroll-mt-20 overflow-hidden">
+    <section id="testimonials" className="py-20 sm:py-24 relative z-10 scroll-mt-20 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-blue-50 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 border border-blue-200/80 dark:border-blue-800/60 shadow-xs mb-3">
             <Sparkles className="w-3.5 h-3.5" /> Community Love
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-zinc-900 dark:text-zinc-50 tracking-tight">
             Loved by fast-moving teams & creators
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-zinc-600 dark:text-zinc-400">
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg text-zinc-600 dark:text-zinc-400">
             Real stories from teams using ChatApp for instant everyday communication.
           </p>
         </div>
 
-        {/* React Slick Slider */}
-        <div className="testimonial-slider px-2">
-          <Slider {...settings}>
+        {/* 1. Mobile Slider (Guaranteed EXACTLY 1 Card per view) */}
+        <div className="md:hidden px-2">
+          <Slider {...mobileSettings}>
             {reviews.map((review) => (
-              <div key={review.id} className="p-3">
+              <div key={`m-${review.id}`} className="px-1 outline-none">
+                <div className="p-6 rounded-3xl bg-gradient-to-br from-white via-slate-50/95 to-blue-50/30 dark:from-zinc-900/95 dark:via-zinc-900/80 dark:to-zinc-950/60 backdrop-blur-xl border border-slate-200/90 dark:border-zinc-800 shadow-md flex flex-col justify-between min-h-[250px]">
+                  <div>
+                    <div className="flex items-center gap-1 mb-3 text-amber-400">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      ))}
+                    </div>
+                    <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed italic">
+                      "{review.comment}"
+                    </p>
+                  </div>
+
+                  <div className="pt-4 border-t border-slate-200/60 dark:border-zinc-800/80 flex items-center gap-3 mt-4">
+                    <Avatar name={review.name} seedId={review.avatarSeed} size="md" />
+                    <div>
+                      <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-50">
+                        {review.name}
+                      </h4>
+                      <p className="text-xs text-blue-600 dark:text-blue-400">
+                        {review.role}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Slider>
+        </div>
+
+        {/* 2. Desktop Slider (3 Cards per view) */}
+        <div className="hidden md:block px-2">
+          <Slider {...desktopSettings}>
+            {reviews.map((review) => (
+              <div key={`d-${review.id}`} className="p-3 outline-none">
                 <div className="p-7 sm:p-8 rounded-3xl bg-gradient-to-br from-white via-slate-50/95 to-blue-50/30 dark:from-zinc-900/95 dark:via-zinc-900/80 dark:to-zinc-950/60 backdrop-blur-xl border border-slate-200/90 dark:border-zinc-800 shadow-[0_15px_35px_-10px_rgba(59,130,246,0.1)] dark:shadow-xl flex flex-col justify-between h-[280px]">
                   <div>
-                    {/* 5 Stars */}
                     <div className="flex items-center gap-1 mb-4 text-amber-400">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                       ))}
                     </div>
 
-                    {/* Review text */}
-                    <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed line-clamp-4 italic">
+                    <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed italic line-clamp-4">
                       "{review.comment}"
                     </p>
                   </div>
 
-                  {/* Profile */}
                   <div className="pt-4 border-t border-slate-200/60 dark:border-zinc-800/80 flex items-center gap-3">
                     <Avatar name={review.name} seedId={review.avatarSeed} size="md" />
                     <div>

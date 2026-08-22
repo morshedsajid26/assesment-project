@@ -113,8 +113,23 @@ select:-webkit-autofill {
 }
 
 /* ==========================================================================
-   Slick Carousel Dots Customization
+   Slick Carousel Responsive Styles
    ========================================================================== */
+
+.testimonial-slider .slick-track {
+  display: flex !important;
+  align-items: stretch;
+}
+
+.testimonial-slider .slick-slide {
+  height: auto !important;
+  display: flex !important;
+}
+
+.testimonial-slider .slick-slide > div {
+  width: 100%;
+  display: flex;
+}
 
 .testimonial-slider .slick-dots {
   bottom: -35px;

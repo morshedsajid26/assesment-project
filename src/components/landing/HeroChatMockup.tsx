@@ -10,7 +10,6 @@ import {
   User,
   Heart,
   Lock,
-  Zap,
 } from "lucide-react";
 import { Avatar } from "@/src/components/ui/Avatar";
 import { ThreeUsersIcon } from "@/src/components/ui/ThreeUsersIcon";
@@ -177,13 +176,13 @@ export const HeroChatMockup: React.FC = () => {
         className="relative rounded-[30px] bg-white/95 dark:bg-zinc-900/90 backdrop-blur-3xl border border-slate-200/90 dark:border-zinc-800 shadow-[0_30px_90px_-20px_rgba(59,130,246,0.25)] dark:shadow-[0_30px_90px_-20px_rgba(0,0,0,0.8)] overflow-hidden"
       >
         {/* Mockup Window Titlebar */}
-        <div className="px-4 sm:px-6 py-4 bg-slate-100/95 dark:bg-zinc-950/85 border-b border-slate-200/80 dark:border-zinc-800/80 flex flex-wrap gap-2 items-center justify-between">
+        <div className="px-4 sm:px-6 py-3.5 bg-slate-100/95 dark:bg-zinc-950/85 border-b border-slate-200/80 dark:border-zinc-800/80 flex flex-wrap gap-2 items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-rose-500/90 inline-block shadow-xs" />
             <span className="w-3 h-3 rounded-full bg-amber-500/90 inline-block shadow-xs" />
             <span className="w-3 h-3 rounded-full bg-emerald-500/90 inline-block shadow-xs" />
-            <span className="text-[11px] sm:text-xs font-extrabold text-zinc-600 dark:text-zinc-400 ml-2 hidden sm:inline-block">
-              ChatApp Live Interactive Studio
+            <span className="text-[11px] sm:text-xs font-bold text-zinc-600 dark:text-zinc-400 ml-2 hidden sm:inline-block">
+              ChatApp Live Studio
             </span>
           </div>
 
@@ -215,10 +214,10 @@ export const HeroChatMockup: React.FC = () => {
         </div>
 
         {/* Mockup Chat Body */}
-        <div className="p-6 md:p-8 bg-gradient-to-br from-slate-50/95 via-sky-50/40 to-indigo-50/30 dark:from-zinc-950 dark:via-zinc-900/90 dark:to-zinc-950 min-h-[390px] flex flex-col justify-between">
+        <div className="p-5 sm:p-6 md:p-8 bg-gradient-to-br from-slate-50/95 via-sky-50/40 to-indigo-50/30 dark:from-zinc-950 dark:via-zinc-900/90 dark:to-zinc-950 min-h-[390px] flex flex-col justify-between">
           {/* Header inside mockup */}
-          <div className="flex items-center justify-between pb-4 border-b border-slate-200/70 dark:border-zinc-800/80">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between pb-4 border-b border-slate-200/70 dark:border-zinc-800/80 gap-2">
+            <div className="flex items-center gap-3 min-w-0">
               <Avatar
                 name={activeTab === "group" ? "Engineering Core" : "Tanvir Rahman"}
                 isGroup={activeTab === "group"}
@@ -226,38 +225,40 @@ export const HeroChatMockup: React.FC = () => {
                 showOnlineDot={activeTab === "direct"}
                 isOnline
               />
-              <div>
-                <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-50 flex items-center gap-1.5">
-                  {activeTab === "group" ? "Engineering Core" : "Tanvir Rahman"}
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-50 truncate">
+                    {activeTab === "group" ? "Engineering Core" : "Tanvir Rahman"}
+                  </h4>
                   {activeTab === "group" && (
-                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 border border-indigo-200/60 dark:border-indigo-800/60">
+                    <span className="px-2 py-0.5 whitespace-nowrap rounded-md text-[10px] font-bold bg-indigo-100 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 border border-indigo-200/60 dark:border-indigo-800/60">
                       Group Channel
                     </span>
                   )}
-                </h4>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1">
+                </div>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1 mt-0.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  {activeTab === "group" ? "12 members • 8 active now" : "Active Now • +880 1712..."}
+                  <span>{activeTab === "group" ? "12 members • 8 active now" : "Active Now • +880 1712..."}</span>
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={addFloatingReaction}
-                className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-200/80 dark:border-zinc-700/60 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 hover:scale-110 active:scale-95 transition-all cursor-pointer shadow-xs"
+                className="p-2 sm:p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-200/80 dark:border-zinc-700/60 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 hover:scale-110 active:scale-95 transition-all cursor-pointer shadow-xs"
                 title="Send instant reaction"
               >
                 <Heart className="w-4 h-4 fill-rose-500" />
               </button>
-              <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-200/80 dark:border-zinc-700/60 text-zinc-500">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-200/80 dark:border-zinc-700/60 text-zinc-500">
                 <Info className="w-4 h-4" />
               </div>
             </div>
           </div>
 
           {/* Animated Message Bubbles with Dynamic Transitions */}
-          <div className="space-y-4 my-6">
+          <div className="space-y-3.5 my-5">
             <AnimatePresence mode="popLayout">
               {messages.slice(0, typing ? 2 : 3).map((msg, i) => (
                 <motion.div
@@ -265,14 +266,16 @@ export const HeroChatMockup: React.FC = () => {
                   initial={{ opacity: 0, y: 20, scale: 0.94 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.4, delay: i * 0.1, type: "spring", damping: 18 }}
-                  className={`flex items-end gap-2.5 ${msg.isMe ? "justify-end" : "justify-start"}`}
+                  className={`flex items-start gap-2.5 ${msg.isMe ? "justify-end" : "justify-start"}`}
                 >
                   {!msg.isMe && (
-                    <Avatar name={msg.sender} seedId={msg.sender} size="xs" />
+                    <div className="mt-0.5 shrink-0">
+                      <Avatar name={msg.sender} seedId={msg.sender} size="xs" />
+                    </div>
                   )}
 
                   <div
-                    className={`max-w-[80%] md:max-w-[65%] rounded-2xl px-4 py-3 text-xs sm:text-sm leading-relaxed ${
+                    className={`max-w-[85%] sm:max-w-[80%] md:max-w-[65%] rounded-2xl px-4 py-2.5 text-xs sm:text-sm leading-relaxed ${
                       msg.isMe
                         ? "bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 text-white rounded-br-xs shadow-lg shadow-blue-500/25"
                         : "bg-white/95 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border border-slate-200/90 dark:border-zinc-700/60 rounded-bl-xs shadow-sm"
@@ -285,7 +288,7 @@ export const HeroChatMockup: React.FC = () => {
                     )}
                     <p className="font-medium">{msg.text}</p>
                     <div
-                      className={`flex items-center justify-end gap-1 mt-1.5 text-[10px] ${
+                      className={`flex items-center justify-end gap-1 mt-1 text-[10px] ${
                         msg.isMe ? "text-blue-100" : "text-zinc-400"
                       }`}
                     >
@@ -303,9 +306,11 @@ export const HeroChatMockup: React.FC = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="flex items-center gap-2"
+                className="flex items-start gap-2"
               >
-                <Avatar name="Tanvir Rahman" seedId="tanvir-lead" size="xs" />
+                <div className="mt-0.5 shrink-0">
+                  <Avatar name="Tanvir Rahman" seedId="tanvir-lead" size="xs" />
+                </div>
                 <div className="px-3.5 py-2 rounded-2xl bg-white/90 dark:bg-zinc-800 border border-slate-200/80 dark:border-zinc-700/60 shadow-xs flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: "0ms" }} />
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: "150ms" }} />
